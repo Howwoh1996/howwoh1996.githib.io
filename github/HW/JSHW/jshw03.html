@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <link rel="stylesheet" href="jshw.css">
+    <title>JSHW03</title>
+
+    <style>
+        img {
+            border-radius: 300px;
+        }
+        .imgcontainer{
+            margin: auto; width: 80%; border: 2px solid red; text-align: center;
+            box-shadow: 20px 20px 50px black;
+        }
+        .divtext{
+            text-align: center; font-size: 35px;
+            margin: 50px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center; font-family: 標楷體;">AIOT17-JavaScipt-黃柏浩</h1>
+    <div style="width: 80%; margin:50px auto; text-align: center;">
+        <ul class="menu_list">
+            <li>jshwmenu</li>
+            <li id="1">jshw01</li>
+            <li id="2">jshw02</li>
+            <li id="3">jshw03</li>
+            <li id="4">jshw04</li>
+            <li id="5">jshw05</li>
+        </ul>
+
+    <div class="imgcontainer"  >
+        
+    <img src="hw_img/rm01.png" width="17%" id="img01">
+    <img src="hw_img/rm01.png" width="17%" id="img02">
+    <img src="hw_img/rm01.png" width="17%" id="img03">
+    <img src="hw_img/rm01.png" width="17%" id="img04">
+    <img src="hw_img/rm01.png" width="17%" id="img05">
+    
+</div>
+    <div class="divtext">單擊圖片可評分 雙擊圖片可重製</div>
+    <div id="div1" class="divtext"></div>
+    <script>
+        var lock = false;
+        for (x = 1; x < 6; x++) {
+            document.getElementById("img0" + x).addEventListener("mouseover", f0i, true);
+            document.getElementById("img0" + x).addEventListener("mouseout", f00, true);
+            document.getElementById("img0" + x).addEventListener("click", fci, true); //click
+            document.getElementById("img0" + x).addEventListener("dblclick", fdi, false); //dblclick
+        }
+        function f00() {
+            if (lock == false) {
+                for (i = 1; i < 6; i++) {
+                    document.getElementById("img0" + i).src = "hw_img/rm01.png";
+                }
+            }
+        }
+        function f0i() {
+            var ii = parseInt(this.id.substring(this.id.length - 1));
+            console.log("ii=" + ii);
+            if (lock == false) {
+                for (i = 1; i < ii + 1; i++) {
+                    document.getElementById("img0" + i).src = "hw_img/rm02.png";
+                }
+            }
+        }
+        function fci() {
+            console.log("cl");
+            var ci = parseInt(this.id.substring(this.id.length - 1));
+            if (lock == false) {
+                for (i = 1; i < ci + 1; i++) {
+                    document.getElementById("img0" + i).src = "hw_img/rm02.png";
+                }
+                var score = document.getElementById("div1");
+                score.innerHTML = "得分: " + ci;
+                lock = true;
+            }
+        }
+        function fdi() {
+            console.log("db");
+            var di = parseInt(this.id.substring(this.id.length - 1));
+            for (i = 1; i < di + 1; i++) {
+                document.getElementById("img0" + i).src = "hw_img/rm02.png";
+            }
+            var score = document.getElementById("div1");
+            score.innerHTML = " ";
+            lock = false;
+        }
+
+    </script>
+    <script src="jshw.js" ;></script>
+</body>
+
+</html>

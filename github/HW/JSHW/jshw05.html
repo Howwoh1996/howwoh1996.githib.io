@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="jshw.css">
+    <title>JSHW05</title>
+    <style>
+        td {
+            border: 1px solid black;
+            text-align: center;
+            width: 50px;
+        }
+
+        .container {
+            width: 90%;
+            column-count: 2;
+            height: 500px;
+            /* border: 1px solid black; */
+            padding: 10px;
+            margin: 0px auto;
+            column-rule: 3px dashed darkblue;
+        }
+
+        .leftbox {
+            width: 90%;
+            height: 450px;
+            /* border: 1px solid rgb(230, 27, 27); */
+
+        }
+
+        .rightbox {
+            width: 90%;
+            height: 450px;
+            /* border: 1px solid rgb(230, 27, 27); */
+
+
+        }
+
+        legend {
+            background-color: yellow;
+            width: 70px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 5px;
+            border: 2px solid brown;
+            font-weight: 900;
+            margin-left: 25px;
+        }
+
+        fieldset {
+            border: 4px solid red;
+            height: 400px;
+            border-radius: 10%;
+            padding: 20px;
+        }
+        th {
+            background-color: lightgreen;
+        }
+        h3 {
+            background-color: green;
+            color: aliceblue;
+            border-radius: 10px;
+            padding: 3px 15px 3px 25px;
+        }
+        p {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-family: 標楷體;">AIOT17-JavaScipt-黃柏浩</h1>
+    <ul class="menu_list">
+        <li>jshwmenu</li>
+        <li id="1">jshw01</li>
+        <li id="2">jshw02</li>
+        <li id="3">jshw03</li>
+        <li id="4">jshw04</li>
+        <li id="5">jshw05</li>
+    </ul>
+    <div class="container">
+        <div class="leftbox">
+            <fieldset>
+                <legend>Calendar</legend>
+                <select name="year" id="year">
+                    <option> year</option>
+                </select>
+                <select name="month" id="month" disabled="true">
+                    <option>month</option>
+                </select>
+                <select name="date" id="date" disabled>
+                    <option>date</option>
+                </select>
+
+                <div class="calendar"></div>
+            </fieldset>
+        </div>
+        <div class="rightbox">
+            <h3>Information</h3>
+            <p id="info">日期選擇中...</p>
+        </div>
+    </div>
+    <script>
+        var year, month, firstDay, totaldays;
+        for (i = 2010; i < 2026; i++) {
+            $("#year").append(`<Option>${i}</Option>`);
+        }
+        for (i = 1; i < 13; i++) {
+            $("#month").append(`<Option>${i}</Option>`);
+        }
+        $("#year").change(get_year_and_set_disabled);
+        $("#month").change(get_month_and_set_disabled_and_append);
+        $("#date").change(make_calendar);
+        function get_year_and_set_disabled() {
+            year = this.value;
+            console.log($(this).next("select"));
+            $(this).attr("disabled", "true").next("select").removeAttr("disabled");
+        }
+        function get_month_and_set_disabled_and_append() {
+            $(this).attr("disabled", "true").next("select").removeAttr("disabled");
+            month = this.value;
+            let dateOfMonth = new Date(year, month, 0); //日期為當月最後一天
+            console.log(dateOfMonth.getDate()); //取得當月最後一天
+            totaldays = dateOfMonth.getDate();
+            for (i = 1; i <= dateOfMonth.getDate(); i++) {
+                $("#date").append(`<Option>${i}</Option>`);
+            }
+        }
+        function make_calendar() {
+            let theDate = new Date(year, month - 1, this.value) //date物件 為使用者所選的當日
+            $(this).attr("disabled", "true");  //不讓改日期了
+            let theFirstDay = new Date(year, month - 1, 1); //當月第一天
+            firstDay = theFirstDay.getDay(); //第一天星期幾
+            $(".calendar").append(`<table class ="table01"> <tr class ="firstRow"><th>Sun</th> <th>Mon</th> <th>Tue</th> <th>Wed</th> <th>Thu</th> <th>Fri</th> <th>Sat</th></tr></table>`);
+            //展開th 星期幾的那一列
+            let weeks = firstDay + totaldays > 35 ? 6 : 5;   //判斷5週還是6週
+            for (i = 0; i < weeks; i++) {  //展開7格 進行5~6次
+                $(".table01").append(`<tr class="tr${i}"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`);
+            }
+            for (i = 1; i < totaldays + 1; i++) {  //放入日期 
+                $("td").slice(firstDay + i - 1, firstDay + i).text(i);
+            }
+            $("td").slice(firstDay + theDate.getDate() - 1, firstDay + theDate.getDate()).css("backgroundColor", "aqua"); //當日顏色設定
+            $("#info").text(`你所選擇的日期是${year}年${month}月${this.value}日`)  //右邊格子輸出文字
+        }
+
+
+
+
+    </script>
+    <script src="jshw.js" ;></script>
+</body>
+
+</html>

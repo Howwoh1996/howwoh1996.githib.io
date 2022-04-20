@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="jshw.css">
+    <title>JS HW02</title>
+    <style>
+        #div11,
+        #div12,
+        #div13,
+        #div14,
+        #div21,
+        #div22,
+        #div24,
+        #div31,
+        #div34,
+        #div12 {
+            display: none;
+        }
+        #out {
+            border: 3px solid red;
+            border-radius: 20px;
+            width: 600px;
+            margin: auto;
+            box-shadow: 20px 20px 20px black;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1 style="text-align: center; font-family: 標楷體;">AIOT17-JavaScipt-黃柏浩</h1>
+        <div style="width: 600px; margin:50px auto; text-align: center;">
+
+
+            <ul class="menu_list">
+                <li>jshwmenu</li>
+                <li id="1">jshw01</li>
+                <li id="2">jshw02</li>
+                <li id="3">jshw03</li>
+                <li id="4">jshw04</li>
+                <li id="5">jshw05</li>
+            </ul>
+
+        </div>
+        <div>
+            <form action="" method="get">
+                <fieldset id="out">
+                    <legend>Form Check</legend>
+                    <label for="input01">姓名: </label>
+                    <input type="text" name="n01" id="input01" onblur="onblur01();">
+                    <div id="div11">
+                        <img src="hw_img/jshw02.png" width="15"> 姓名必須全為中文
+                    </div>
+                    <div id="div12">
+                        <img src="hw_img/jshw02.png" width="15"> 不可有空白
+                    </div>
+                    <div id="div13">
+                        <img src="hw_img/jshw02.png" width="15"> 要兩個字以上
+                    </div>
+                    <div id="div14">
+                        <img src="hw_img/jshw021.png" width="15"> 正確
+                    </div>
+                    <br>
+                    <p style="margin:0px; font-size: 50%; color: rgb(165, 159, 159);">1.不可空白 2.兩個字以上 3.必須全部是中文字</p>
+
+                    <hr>
+                    <label for="input02">密碼: </label>
+                    <input type="password" name="" id="input02" onblur="onblur02();">
+                    <div id="div21">
+                        <img src="hw_img/jshw02.png" width="15"> 不可空白
+                    </div>
+                    <div id="div22">
+                        <img src="hw_img/jshw02.png" width="15"> 至少6個字且須包含英文與數字與特殊字元
+                    </div>
+                    <div id="div24">
+                        <img src="hw_img/jshw021.png" width="15"> 正確
+                    </div>
+                    <br>
+                    <p style="margin:0px; font-size: 50%; color: rgb(165, 159, 159);">1.不可空白 2.至少6個字且須包含英文與數字與特殊字元</p>
+
+                    <hr>
+                    <label for="input03">日期: </label>
+                    <input type="text" name="" id="input03" onblur="onblur03();">
+                    <div id="div31">
+                        <img src="hw_img/jshw02.png" width="15"> 錯誤日期
+                    </div>
+                    <div id="div34">
+                        <img src="hw_img/jshw021.png" width="15"> 正確
+                    </div>
+                    <br>
+                    <p style="margin:0px; font-size: 50%; color: rgb(165, 159, 159);">日期格式 須為2022/03/05</p>
+                </fieldset>
+        </div>
+
+
+        <script>
+            function containSpecial(s) {
+                var containSpecial = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
+                return (containSpecial.test(s));
+            }
+            function containaz(s) {
+                var containaz = new RegExp('[a-z A-Z]');
+                return (containaz.test(s));
+            }
+            function contain09(s) {
+                var contain09 = new RegExp('[0-9]');
+                return (contain09.test(s));
+            }
+            function containSpAz09(str) {
+                if (containaz(str)) {
+                    if (containSpecial(str)) {
+                        if (contain09(str)) {
+                            return true;
+                        }
+                    }
+                }
+                console.log("c f");
+                return false;
+            }
+            function div1if3(str) {
+                var eleobj = document.getElementById("div13");
+                if (str.length < 2) {
+                    eleobj.style.display = "inline";
+                } else {
+                    eleobj.style.display = "none";
+                }
+            }
+            function div1if1(str) {
+                var eleobj = document.getElementById("div11");
+                if (/\w/.test(str)) {
+                    eleobj.style.display = "inline";
+                } else {
+                    eleobj.style.display = "none";
+                }
+            }
+            function div1if2(str) {
+                var eleobj = document.getElementById("div12");
+                if (str.indexOf(" ") == -1) {
+                    eleobj.style.display = "none";
+                } else {
+                    eleobj.style.display = "inline";
+                }
+            }
+            function div1if(str1) {
+                var eleobj1 = document.getElementById("div14");
+                div1if1(str1);
+                div1if2(str1);
+                div1if3(str1);
+                if (str1.indexOf(" ") == -1 && str1.length > 1 && !(/\w/.test(str1))) {
+                    eleobj1.style.display = "inline";
+                } else {
+                    eleobj1.style.display = "none";
+                }
+            }
+            function div2if1(str) {
+                var eleobj = document.getElementById("div21");
+                if (str == "") {
+                    eleobj.style.display = "inline";
+                } else {
+                    eleobj.style.display = "none";
+                }
+            }
+            function div2if2(str) {
+                var eleobj = document.getElementById("div22");
+                if (containSpAz09(str)) {
+                    eleobj.style.display = "none";
+                } else {
+                    eleobj.style.display = "inline";
+                }
+            }
+            function div2if(str1) {
+                var eleobj1 = document.getElementById("div24");
+                div2if1(str1);
+                div2if2(str1);
+                if (containSpAz09(str1) && str1 != "") {
+                    eleobj1.style.display = "inline";
+                } else {
+                    eleobj1.style.display = "none";
+                }
+            }
+            function onblur01() {
+                var a = document.getElementById("input01").value;
+                div1if(a);
+            }
+            function onblur02() {
+                var a = document.getElementById("input02").value;
+                div2if(a);
+            }
+            function onblur03() {
+                var a = document.getElementById("input03").value;
+                console.log(a);
+                var b = new Date(a);
+                var c = document.getElementById("div31");
+                var d = document.getElementById("div34");
+                if (parseInt(a.substring(a.length - 2)) == b.getDate()) {
+                    c.style.display = "none";
+                    d.style.display = "inline";
+                } else {
+                    d.style.display = "none";
+                    c.style.display = "inline";
+                }
+            }
+
+        </script>
+
+        </form>
+
+
+
+
+
+
+
+        <script src="jshw.js" ;></script>
+</body>
+
+</html>

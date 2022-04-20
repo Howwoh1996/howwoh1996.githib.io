@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="300"> <!-- 每X秒刷新-->
+    <title>Html+CSS 學習筆記</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <h1>20220406-0408 Html 學習筆記</h1>
+    <ul class="floatHyper">
+        <li> <a href="#img"> img</a> </li>
+        <li> <a href="#hyperlink"> hyperlink</a> </li>
+        <li> <a href="#figure"> figure</a> </li>
+        <li> <a href="#css"> css</a> </li>
+        <li> <a href="#embedding"> embedding</a> </li>
+        <li> <a href="#hyperlinkselector"> hyperlinkselector</a> </li>
+        <li> <a href="#list-style-type">list-style-type </a> </li>
+        <li> <a href="#float"> float</a> </li>
+        <li> <a href="#table"> table</a> </li>
+        <li> <a href="#form"> form</a> </li>
+        <li> <a href="#border"> border</a> </li>
+        <li><a href="#iframe">iframe</a></li>
+        <li><a href="#newI">INPUT 新屬性</a></li>
+        <li><a href="#specialC">特殊字元</a></li>
+        <li><a href="#newE">HTML5新元素</a></li>
+    </ul>
+    <h2 class="class001"> 前置工具</h2>
+    <ul>
+        <li>測試工具</li>
+        <ul>
+            <li><a href="http://html5test.com"> 測試瀏覽器</a></li>
+            <li><a href="http://caniuse.com">測試語法</a></li>
+        </ul>
+        <li> 編輯工具</li>
+        <ul>
+            <li>使用VSCode 可以支援emmet 方便快速編寫程式 以下為縮寫</li>
+            <li><a href="cheatsheet-a5.pdf"> 縮寫的字典</a></li>
+        </ul>
+
+    </ul>
+    <h2>基礎概念</h2>
+    <ul>
+        <li>初始設定</li>
+        <ul>
+            <li>一般會有 head body 新手設定可以用 ! 來直接設定</li>
+            <li> &lt;meta charset="UTF-8"></li>
+            <li>編碼方式:UTF-8.big-5 >> UTF-8字的容量比較多 較建議 EX:堃</li>
+            <li> &lt;meta http-equiv="refresh" content="300"></li>
+            <li>刷新時間 以秒為單位 (也可以做成重新導向)</li>
+        </ul>
+        <li>標籤概念</li>
+        <ul>
+            <li> 使用標籤來創作 &lt;標籤名字...> 一般需要 &lt;/標籤名稱> 來關閉標籤 </li>
+            <li>單一標籤 EX: br,img,meta,hr 不需要 &lt;/標籤名稱> 來關閉標籤</li>
+
+            <li>元素(標籤)所占區塊</li>
+            <ul>
+                <li>
+                    block意義: 佔一整列.前後之元素會上下換行產生 <br>
+                    block(區塊)所屬元素 : h1~h6,p,div... <br>
+                    inline : 所站位置為內容本身 前後之元素 會緊連著 EX: span.img.a
+                </li>
+
+                <li>
+                    inline 元素裡面 不可以放BLOCK元素 (會無效) 只能放inline元素<br>
+                    div.span 就像是容器 決定裡面可以裝甚麼 (容器可以方便指定class 用作CSS排版)
+                </li>
+                <li>
+                    br 強迫換行 !不要做跟樣式有關 例如:覺得一行的長度太長 要調整寬度用CSS去調整
+                </li>
+            </ul>
+        </ul>
+    </ul>
+    <h2 class="class001"> 清單 ul vs ol vs dl </h2>
+
+    <h3>ul篇</h3>
+    <ul style="background-color: aqua;">
+        <li style="background-color: blue;"> ul >> unordered list </li>
+        <li>注意顏色 淺藍色區塊是ul 深藍色是單一li </li>
+    </ul>
+    <h3>ol篇</h3>
+    <ol>
+        <li>ol 會有數字</li>
+        <li>用法上是 ol>li </li>
+    </ol>
+    <h3>dl篇</h3>
+    <dl>定義清單dl dt dd 用法 我是dl
+        <dt>dl </dt>
+        <dd>定義清單 </dd>
+        <dt>dt</dt>
+        <dd>清單項目</dd>
+        <dt>dd</dt>
+        <dd>項目說明</dd>
+        <dt>我是dt </dt>
+        <dd>我是dd </dd>
+
+    </dl>
+
+    <h2 class="class001" id="hyperlink">超連結 篇</h2>
+    <div class="">
+        <a href="https://www.ispan.com.tw"> 資展國際</a>
+        <ul>
+            <li>基本資料介紹</li>
+            <ul>
+                <li>連線到外部網站 需要 http 有些特定網站 一定要 https</li>
+                <li>甚麼時候使用到路徑:超連結 外部檔案 圖片等等 </li>
+                <li>比較常用是用相對路徑 同一層直接打檔名 要包含副檔名</li>
+                <li>要進入其他資料夾 可以 同一層的資料夾/該檔案名</li>
+                <li>回到上一層 使用../ </li>
+                <li> a 超連結元素 是一個inline元素</li>
+                <li>注意! /超連結位置 會變成從電腦的跟目錄去找 *就不是相對路徑了(</li>
+            </ul>
+            <li>電子郵件</li>
+            <ul>
+                <li>連結電子郵件語法 a href:""mailto:電子郵件 </li>
+                <li><a href="mailto:zzhowwoh.am03@g2.nctu.edu.tw">寄信範例</a></li>
+            </ul>
+            <li>書籤</li>
+            <ul>
+                <li>書籤 超連結到同一個網頁的指定位置</li>
+                <li>要先建立書籤 建立id屬性 id="id001" </li>
+                <li>連結時要加入# </li>
+                <li>a href:"#id001"</li>
+            </ul>
+        </ul>
+    </div>
+    <h2 class="class001" id="img">圖片篇</h2>
+    <a href="https://ani.gamer.com.tw/animeVideo.php?sn=4996"><img src="images/rm.jpg" alt="是在哭" width="300" title="我婆">
+    </a>
+    <ul>
+        <li>寫法: img src="圖片的位置" </li>
+        <li>img 是一個inline元素</li>
+        <li>alt 當圖片顯示不了時 出現的東西 </li>
+        <li>width 寬度 預設單位為px 如果不指定高度 會等比例縮放至該寬度的大小</li>
+        <li>title 當把滑鼠放上去 會顯示的訊息</li>
+        <li>可以配合超連結 將a標籤掛在img標籤的兩側</li>
+
+    </ul>
+    <h2 class="class001" id="figure">figure元素</h2>
+    <figure style="background-color: rgb(15, 223, 223);">
+        <figcaption>SO CUTE!</figcaption>
+        <img src="images/rm01.jpg" alt="" height="300">
+        <img src="images/rm02.jpg" alt="" height="300">
+        <figcaption>super CUTE!</figcaption>
+    </figure>
+    <ul>
+        <li>figure元素是block </li>
+        <li>可以將兩張以上圖片放到同一個區塊 群組化</li>
+        <li>圖片的位置會微微靠中 有縮排</li>
+        <li>figcaption 是figure元素的標題 只要有一個</li>
+        <li>淺藍色區塊是 figcaption</li>
+    </ul>
+
+    <h2 class="class001" id="css">css語法</h2>
+    <ul>
+        <li>修改HTML "標籤" 的工具</li>
+        <li>分號要加在屬性後方 </li>
+        <li>註解方法 /* */</li>
+        <li> selector {屬性:屬性值;屬性:屬性值;屬性:屬性值;屬性:屬性值} </li>
+        <li>選取器(selector) type class id </li>
+        <li>用CSS指定長度大小時 要指定單位 1em=100%=12pt=16px </li>
+        <li>顏色表達 color name.Hex rgb.decimal 可查色碼表 </li>
+        <ul>
+            <li style="color: yellow;">color name = yellow</li>
+            <li style="color: #235689;">hex rgb = #235689</li>
+            <li style="color: rgb(150, 50, 115);">decimal = rgb(150,50,115)</li>
+        </ul>
+        <li>文字修飾 4種</li>
+        <ul>
+            <li style="text-decoration: underline;">text-decoration: underline</li>
+            <li style="text-decoration: none;">text-decoration: none</li>
+            <li style="text-decoration: overline;">text-decoration: overline</li>
+            <li style="text-decoration: line-through;">text-decoration: line-through</li>
+        </ul>
+        <li>英文大小寫轉換 text-transform</li>
+        <li>文字顏色</li>
+        <li>字型 有安裝的皆可以 font-family </li>
+        <li>字型粗細 font-weight 100(細)~900(粗) </li>
+        <li>字型類型 font-style : normal | italic | oblique </li>
+        <ul>
+            <li style="font-style: italic;">italic 斜體字型的字典</li>
+            <li style="font-style: oblique;">oblique 如果找的到italic中有該字 就使用 若沒有 則主動把他變斜</li>
+        </ul>
+        <li>font-size: 使用比例時 是指跟原來的比</li>
+        <li>修改方式有3 1.直接加入 style 在標籤裡面</li>
+    </ul>
+
+    <h2 class="class001" id="embedding">自訂樣式表 embedding 注意事項</h2>
+    <ul>
+        <li>在兩個head標籤之間 用style標籤夾住 在寫其CSS程式碼</li>
+        <li>選擇要修改的標籤做修改 例如:h1~h6 ....... </li>
+        <li>後面放上{ } 做修改 所有同標籤的都會被修改</li>
+        <li>若剛好要指定的內容一樣 可以h1,h2{} 一起修改</li>
+        <li>class 選取方法 .類別名 </li>
+        <li>class = "類別名" </li>
+        <li>只讓特定標籤才能套用CLASS -- tag.類別名</li>
+        <li>一個標籤可以有多個class 使用方法class="cl01 cl02 cl03"(用空格分開每個類別)</li>
+        <li>上面的寫法 順序是沒差 但是上面的宣告順序有差 後的會覆蓋前的</li>
+        <li>常用來一個類別 只宣告一兩項東西 例如color font-size 再讓標籤多拿幾個類別</li>
+        <li>id :使用# (class是.)</li>
+        <li>同一個id名盡量只使用一次 因為JS一次只會做第一個找到的ID 若有重複的其他ID會出錯</li>
+        <li>優先級別順序 style inline > id > class 同樣級別時 後的覆蓋前的 </li>
+        <li>引用樣式表 CSS檔</li>
+        <ul>
+            <li>需要有檔案 副檔名為.css</li>
+            <li>將以下標籤放在兩個head標籤之中</li>
+            <li> link rel:"stylesheet" href ="檔案路徑和檔名" </li>
+            <li>rel:"stylesheet" 的意思即為樣式表 就是css</li>
+            <li>link 元素 和style 的先後順序 有差別 後的覆蓋前的 所以建議link放在style前面</li>
+        </ul>
+    </ul>
+
+    <h2 class="class001" id="hyperlinkSelector">超連結選取器</h2>
+    <ul>
+        <li>a:link 中 ":"是偽元素 專門修改a元素</li>
+        <li> a元素有四個可以修改的 分別是 a:link a:visited a:hover a:active</li>
+        <ul>
+            <li> a:link 預設樣式</li>
+            <li> a:visited 瀏覽過的樣式</li>
+            <li> a:hover 滑鼠移至的樣式</li>
+            <li> a:active 選取 </li>
+        </ul>
+        <li>上述四個要按照順序擺放 (不然會有覆蓋的問題)</li>
+        <li>只修改特定位置的a元素 用class 語法為 .class01 a:link{} </li>
+        <li> .之後接某個class 一個空格 接 a:XXXX 那四個東西</li>
+    </ul>
+    <h2 id="list-style-type">清單樣式的屬性</h2>
+    <ul class="list01">
+        <li>list-style-type 清單前使用的符號</li>
+        <li>list-style-image : url("圖片路徑與檔名")</li>
+        <li>要用圖片 建議先拿掉符號再放 list-style-type:none (若不這樣做=圖片覆蓋在符號上)</li>
+    </ul>
+    <h2 id="border">邊框樣式</h2>
+    <ul>
+        <li>border 邊界的線 border : 1px solid green</li>
+        <li>1px 是線的寬度 solid是線的型態(其餘還有dashed,double,ridge...) green是顏色 </li>
+        <li>margin 外距 可以針對上下左右更改 若直接輸入4個 長度 將會依序是上右下左 </li>
+        <li>padding 內距 可以針對上下左右更改 若直接輸入4個 長度 將會依序是上右下左</li>
+        <li>border-radius 邊界預設為方形 用此讓4角變圓滑 可以針對上下左右更改 若直接輸入4個 長度 將會依序左上 順時鐘旋轉</li>
+        <li>margin 可以設定成auto 就會左右自動置中 如果要離上面有高度 可以 80px auto </li>
+    </ul>
+    <h2 id="float">浮動</h2>
+    <img src="images/rm03.webp" alt="" height="200" style="float: left;">
+    <img src="images/rm04.jpg" alt="" height="200" style="float: right;">
+    <ul style="margin: 0px 300px;">
+        <li>浮動的寫法 是 float:left | right</li>
+        <li>float 後面的元素 都會受浮動的影響</li>
+        <li>要取消浮動 可以使用clear : left | right | both</li>
+
+    </ul>
+
+    <h2 id="table" style="clear: both;">table 表格</h2>
+    <ul>
+        <li>table的基本屬性與child</li>
+        <ul>
+            <li>一個tr 是一個橫排</li>
+            <li>一個tr 裡面放N個td或th 就會有N個格子</li>
+            <li>th td 差別在於一些預設的不同 (th會置中.粗體...)</li>
+            <li> tr:hover 可以讓滑鼠移至上面時 使同一列的表格產生變化(例如改變顏色) </li>
+        </ul>
+        <li>合併儲存格</li>
+        <ul>
+            <li>colspan(橫向) rowspan(縱向) 可以合併儲存格</li>
+            <li>被合併就要少一個 不然會凸出來 colspan 就是同一排的(tr)要少一格 rowspan 就是下一排的tr的對應位置要少一格儲存格</li>
+        </ul>
+        <li>群組化表格</li>
+        <ul>
+            <li>thead tbody tfoot可以群組化表格 方便制定樣式 </li>
+            <li>tbody tr:nth-child(2n){background-color: aquamarine;} 改變所有偶數列的寫法</li>
+            <li> text-align 是文字對齊 可以選置中.靠左.靠右 將群組表格統一調整 justify 左右對齊</li>
+        </ul>
+    </ul>
+    <table>
+        <caption>
+            <h2>表格標題</h2>
+        </caption>
+        <thead style="background-color: aqua; text-align: center;">
+            <tr>
+                <th>col1</th>
+                <th colspan="2">col2</th>
+                <th>col3</th>
+                <!-- <th>col4</th> -->
+            </tr>
+        </thead>
+        <tbody style="background-color: bisque; text-align: center;">
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td rowspan="2">3</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>6</td>
+                <!-- <td>7</td> -->
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="form">表單</h2>
+    <ul>
+        <li>form 表單的屬性與屬性值</li>
+        <ul>
+            <li>action 接收程式的url</li>
+            <li>method 傳送資料的方式 有get post</li>
+            <ul>
+                <li>get 是用網址列將資料傳送出去 按送出後 可以看到網址的改變</li>
+                <li>post 則是用封包將資料傳送出去 所以如果接收的程式還沒寫 會跑不過</li>
+
+            </ul>
+            <li>enctype 傳送時的編碼設定</li>
+        </ul>
+
+        <li>input標籤中的屬性與屬性值</li>
+        <ul>
+            <li>input 裡面的value屬性 是設定預設的字串 </li>
+            <li>size 表示寬度</li>
+            <li>name 是用來分辨該資料是屬於哪一個 很重要 盡量設成 有意義的單詞</li>
+            <li>type屬性當中的 text表示文字輸入 password表示文字輸入時 會以*表示</li>
+            <li>input標籤中 type屬性當中的submit表示送出 reset是清除 預設已經設定了 不需要額外設定 </li>
+            <li>maxlength:"N" 最大字元數=N (也會影響寬度)</li>
+            <li>checkbox 複選勾選框 value 表示回傳時所代表的意思</li>
+            <li>radio 單選勾選框 name相同 表示是同一題 同一個name最多只有一個勾選 value 表示回傳時所代表的意思</li>
+
+        </ul>
+        <li>textarea標籤中的屬性與屬性值</li>
+        <ul>
+            <li>cols 表示寬度 大概單位是字元</li>
+            <li>rows 表示高度 大概單位是字元</li>
+        </ul>
+        <li>label 標籤中的屬性與屬性值</li>
+        <ul>
+            <li>是 inline 元素 直接修改寬度 會無效(因為inline元素大小為自己本身)</li>
+            <li>但是配合浮動元素 可以讓寬度width重新有效 </li>
+            <li>for:"XXXX" 其中XXXX可以對應到ID 使按下label時 可以直接到輸入文字模式 或是勾選方塊</li>
+            <li></li>
+            <li></li>
+        </ul>
+
+        <li>下拉式選單</li>
+        <ul>
+            <li>select標籤的屬性與屬性值</li>
+            <li>name id multiple複選 沒有加就是單選</li>
+            <li>option標籤 value回傳值 selected預設選取 給使用者看的選項要寫在兩個option標籤之中</li>
+
+        </ul>
+        <li>fieldset</li>
+        <ul>
+            <li>fieldset標籤是用來將表單元件群組組件化</li>
+            <li>常見修改項目:width,margin,border,background-color...等</li>
+            <li>legend 是群組的標題 </li>
+        </ul>
+        <li>其他注意事項</li>
+        <ul>
+            <li>所有想要被傳送的資料都要放到form裡面</li>
+            <li>原本按鈕預設是啟動狀態enable 可以改成disable不啟動狀態 </li>
+            <li>button 是沒有預設功能的按鈕 需要自己用JS設定</li>
+            <li>button 有兩種寫法 一種是:input type="button" value="按鈕1". 另一種是:button type="button" 按鈕2 /button</li>
+            <li>調整表單間距的建議作法 在每一個要區隔的地方加入div 然後對div做樣式設定</li>
+        </ul>
+
+    </ul>
+    <form action="" method="get" enctype="">
+
+        <fieldset>
+            <legend style="font-size: 150%; text-align: center;">表單DEMO(legend)</legend>
+            <div class="divs">
+                <label for="account"> 帳號 : </label>
+                <input type="text" id="account" name="account" value="02">
+            </div>
+            <div class="divs">
+                <label for="pwd">密碼 :</label>
+                <input type="password" name="pwd" size="10" id="pwd">
+
+            </div>
+            <div class="divs">
+                <label for="memo"> 意見 : </label>
+                <textarea name="memo" id="" cols="50" rows="10">
+
+            </textarea>
+            </div>
+            <div class="divs" style="text-align: center;">
+                <input type="submit" value="送出">
+                <input type="reset" value="清除">
+                <input type="button" value="按鈕1">
+                <button type="button"> 按鈕2 </button>
+            </div>
+        </fieldset>
+
+
+        <fieldset>
+            <div class="divs">
+                <label for="male">男</label>
+                <input type="radio" name="gender" value="male" id="male">
+                <label for="female">女</label>
+                <input type="radio" name="gender" id="female">
+
+
+            </div>
+            <div class="divs">
+                <input type="checkbox" name="like" id="re001">
+                <label for="re001">雷姆</label>
+                <input type="checkbox" name="like" id="re002">
+                <label for="re002">拉姆</label>
+                <input type="checkbox" name="like" id="re003">
+                <label for="re003">艾蜜莉亞</label>
+                <input type="checkbox" name="like" id="re004">
+                <label for="re004">486</label>
+            </div>
+
+            <select name="number1" id="num1">
+                <option value="1">01</option>
+                <option value="2">02</option>
+                <option value="3" selected>03</option>
+                <option value="4">04</option>
+                <option value="5">05</option>
+            </select>
+            <select name="number2" id="num2" multiple>
+                <option value="1">01</option>
+                <option value="2">02</option>
+                <option value="3" selected>03</option>
+                <option value="4">04</option>
+                <option value="5">05</option>
+            </select>
+            <label for="f01">F01</label>
+            <input type="file" name="f01" id="f01">
+        </fieldset>
+    </form>
+    <h2 id="iframe">iframe 網頁嵌入</h2>
+    <ul>
+        <li>使用iframe </li>
+        <li>某些網站不適用 例如:入口網站</li>
+        <li>可以嵌入youtube影片(有些因版權問題而不能播) 或 google地圖</li>
+        <li> <a href="iframedemo.html">嵌入範例</a></li>
+
+    </ul>
+
+    <h2 id="newE">html5 新元素</h2>
+    <ul>
+        <li>結構語意元素</li>
+        <li>section,header,footer,aside,nav,article,figure......</li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h2 id="newI">input type 屬性新類別</h2>
+    <ul>
+        <li>日期時間選擇器: date,datetime-local,month,time,week...</li>
+        <li>新文字輸入型方塊:email,url,tel,search...(傳送時瀏覽器會檢查,手機輸入時也有差)</li>
+        <li>一般類型:color,range,number...(可搭配min,max)</li>
+        <li>範圍驗證maxlength </li>
+        <li>required 必填 不寫不給送出</li>
+        <li>身分證字號:pattern="[a-z,A-Z]{1}[1-2,8-9]{1}\d{8}"</li>
+        <li>按下送出時 會檢查pattern是否有符合 必填有沒有填...等等</li>
+        <li>placeholder="xxx" 可以取代value 會變成淡淡的字</li>
+        <li>autocomplete="off" 不自動填入東西</li>
+        <li>multiple 加在input file 可以一次上傳多個檔案</li>
+        <li>disable 選不到 readonly(只有文字輸入有效)唯讀狀態,可以選但是編輯無法 </li>
+        <li>datalist 讓文字輸入也有選項 在input 放list屬性 屬性值和datalist的ID一樣 然後放option 在兩個datalist標籤之間 </li>
+        <li>ex: &lt; input type ="number" name="number01" min="0" max="120" required/> </li>
+        <li>ex: &lt; input type ="range" name="number02" min="0" max="120" /></li>
+        <li>ex: &lt; input type ="text" name="text01" pattern="[a-z,A-Z]{1}[1-2,8-9]{1}\d{8}" /></li>
+        </li>
+        <form action="" method="get">
+            <input type="number" name="number01" min="0" max="120" required placeholder="必填" />
+            <input type="range" name="number01" min="0" max="120" />
+            <input type="text" name="text01" pattern="[a-z,A-Z]{1}[1-2,8-9]{1}\d{8}" placeholder="idnumber" />
+            <input type="text" name="text02" id="" placeholder="autocomplete:off" autofocus autocomplete="off">
+            <input type="text" name="text03" id="" readonly placeholder="readonly">
+            <input type="text" name="text04" id="" disabled placeholder="disabled">
+            <input type="file" name="" id="" multiple>
+            <br>
+            <input type="text" name="text05" list="textlist" id="">
+            <datalist id="textlist">
+                <option value="111"></option>
+                <option value="112"></option>
+                <option value="113"></option>
+                <option value="114"></option>
+            </datalist>
+
+            <input type="submit" value="送出">
+        </form>
+    </ul>
+    <h2 id="specialC">特殊字元</h2>
+    <ul>
+        <li>&copy; = &amp;copy;</li>
+        <li>空白 = &amp;nbsp;</li>
+        <li>& = &amp;amp;</li>
+        <li>> = &amp;gt;</li>
+        <li>&lt; = &amp;lt;</li>
+        <li>" = &amp;quot;</li>
+        <li>&reg; = &amp;reg;</li>
+        <li>&#8482; = &amp;#8482;</li>
+    </ul>
+
+    <h2 id="font" class="font2">字體篇 font</h2>
+    <ul>
+        <li class="font1">font</li>
+        <li class="font2">font</li>
+        <li class="font3">font</li>
+        <li class="font001">font</li>
+        <li>作法一:@font-face { src: url(範例/fonts/JustOldFashion.ttf); font-family: font1; }</li>
+        <li>作法一解析:自己有該文字檔(ttf) 將上述那行丟入css區,即可用font-family:font1 使用該字體 (font1是自己取名的)</li>
+        <li>作法二:&lt;link href="https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
+        </li>
+        <li>作法二解析:自己沒有字體 去google fonts找 (有用link 跟import 兩種)</li>
+    </ul>
+
+    <h2>文字調整</h2>
+    <ul>
+        <li>行高 line-height: X px 表示文字佔多少的高度 若文字大小本身比行高還小 則上下置中於該行</li>
+        <li>好用小技巧:如果想把單行文字上下置中於容器內 可以將行高設定成和容器的高度相同 該行文字就會置中了</li>
+        <li>文字水平對齊 </li>
+        <li>文字垂直</li>
+    </ul>
+    <h2>多欄版型</h2>
+    <div class="colsof400px">
+        <ul>
+            <li>column-count:N; 表示要N欄 </li>
+            <li>column-width:X px; 表示一欄寬度為 X px 看總寬度 自動生成其他欄 </li>
+            <li>column-gap:X px; 表示欄的間距為X px </li>
+            <li>column-rule:X px solid green; 表示欄的分隔線的樣式 (寬x px 實心 綠)</li>
+            <li></li>
+        </ul>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+    </div>
+
+
+
+
+
+
+    <h2>background</h2>
+    <ul>
+        <li style="background-color: aliceblue;"> background-color : aliceblue 更改背景顏色</li>
+        <li style="background-image: url(images/background.jpg);"> background-image: url(images/background.jpg); 背景圖片
+        </li>
+        <li>background-attachment: scroll | fixed 背景附著: 捲動|固定</li>
+        <li>background-repeat: 背景重復貼</li>
+        <ul>
+            <li>repeat 貼滿該區塊 (預設)</li>
+            <li>repeat-x 只往X方向貼滿</li>
+            <li>repeat-y 只往Y方向貼滿</li>
+            <li>no-repeat 不重複(只有一張)</li>
+        </ul>
+        <li>background-position:top|left|right|bottom 也可設定成 100px 150px 或是百分比</li>
+        <li>background-size: 75px 98px 背景尺寸</li>
+    </ul>
+    <h2>樣式屬性</h2>
+    <ul>
+        <li>display:</li>
+        <ul>
+            <li>none 不顯示</li>
+            <li>block 以區塊的形式顯示 前後的元素都會換行顯示</li>
+            <li>inline 顯示 前後的元素會緊貼這個元素</li>
+            <li>list-item 與block差不多</li>
+        </ul>
+        <li>visibilty</li>
+        <ul>
+            <li>visble 顯示</li>
+            <li>inherit 如果父元素可見 就可見</li>
+            <li>hidden 隱藏 (但仍占有空間)(與display:none 不同)</li>
+        </ul>
+        <li>overflow</li>
+        <ul>
+            <li>auto 若超出容器 自動顯示卷軸 (最常用)</li>
+            <li>scroll 強制顯示卷軸</li>
+            <li>hidden 超出容器 就隱藏超出的部分</li>
+            <li>visible 全部顯示 無視區塊大小(預設)</li>
+        </ul>
+    </ul>
+    <h2>css樣式屬性</h2>
+    <ul>
+        <li>文字陰影 與區塊陰影</li>
+        <ul style="box-shadow: 3px 5px 7px red;">
+            <li style="text-shadow: 3px 5px 7px blue;">寫法:text-shadow: 3px 5px 7px blue</li>
+            <li>第一個屬性值 h-shadow 表示左右偏移的陰影 正為向右的距離</li>
+            <li>第二個屬性值 v-shadow 表示上下偏移的陰影 正為向下的距離</li>
+            <li>第三個屬性值 blur 是陰影的模糊的程度 越大越模糊 </li>
+            <li>第四個屬性值 color 為陰影的顏色</li>
+            <li>區塊陰影寫法:box-shadow: 3px 5px 7px red; 四個屬性值同上</li>
+        </ul>
+        <li>定位(position:absolute|relative|static|fixed)</li>
+        <ul>
+            <li>absolute 絕對位置 父元素內容區為邊界</li>
+            <li>relative 相對位置 原本應該在位置</li>
+            <li>static 靜態位置 依照原始碼的排列順序來定位 (預設)</li>
+            <li>fixed 固定位置 捲動卷軸時 不會移動</li>
+        </ul>
+        <li>bottom|left|right|top : auto | length(X px) | percentage (X %) </li>
+        <li>設定目標元素與邊界距離的屬性</li>
+        <li>詳細請參考 <a href="範例/position.html">定位DEMO</a></li>
+    </ul>
+    <h2>RWD響應式網頁設計(Responsive Web Design) 與Media Queries </h2>
+    <ul>
+        <li>media types裝置類型</li>
+        <ul>
+            <li>all:所有裝置</li>
+            <li>screen:螢幕裝置</li>
+            <li>print:印刷裝置，也包含預覽列印的畫面</li>
+            <li>speech:可以讀出頁面的設備</li>
+        </ul>
+        <li>media feature裝置特性</li>
+        <ul>
+            <li>width.height 螢幕的寬度與高度 可加上 min- . max- </li>
+            <li>orientation 螢幕旋轉方向 屬性值:portrait(直向) landscape(橫向)</li>
+            <li>aspect-ratio 螢幕長寬比 EX: 1/1 1920/1080</li>
+            <li>color 輸出螢幕的色彩位元數 若為0則代表黑白裝置</li>
+            <li>resolution 螢幕解析度</li>
+        </ul>
+        <li>有 or and not only 四種模式</li>
+        <li>寫法範例:</li>
+        <ul>
+            <li>@media screen and (min-width:400px) and (max-width:600px) { .....CSS設定.....} </li>
+            <li> &lt;head> &lt;link rel="stylesheet" media ="screen and (color)" href="example.css" /> &lt;/head></li>
+            <li>@import url(example.css) screen and (color); </li>
+        </ul>
+    </ul>
+
+    <!-- ctrl + / (/要是右SHIFT旁的/) 可以召喚註解 -->
+</body>
+
+</html>

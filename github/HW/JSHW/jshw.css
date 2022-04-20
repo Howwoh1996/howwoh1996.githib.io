@@ -1,0 +1,21 @@
+h1{
+    font-family: 標楷體;
+    text-align: center;
+}
+.menu_list{
+    display :flex;
+    justify-content: center;
+    padding: 0px ;
+}
+.menu_list li{
+    margin:0px 5px;
+    list-style: none;
+    background-color:rgb(117, 175, 225)  ;
+    border: 1px solid blue;
+    width: 100px;
+    height: 50px;
+    border-radius: 40%;
+    line-height: 50px ;
+    text-align: center;
+    
+}

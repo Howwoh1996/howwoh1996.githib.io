@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="jshw.css">
+    <title>jshw04</title>
+    <style>
+        .c1 {
+            background-image: url(hw_img/hw04img01.jpg);
+        }
+
+        .c2 {
+            background-image: url(hw_img/hw04img02.jpg);
+        }
+
+        .c3 {
+            background-image: url(hw_img/hw04img03.jpg);
+        }
+
+        .c4 {
+            background-image: url(hw_img/hw04img04.jpg);
+        }
+
+        .c0 {
+            background-image: url(hw_img/hw04img05.png);
+        }
+
+        .img1 {
+            background-image: url(images/re002.jpg);
+        }
+
+        .imgButton {
+            width: 80px;
+            margin: 50px;
+        }
+
+        #divButton {
+            text-align: center;
+        }
+
+        .divText {
+            text-align: center;
+            font-size: 15px;
+
+        }
+
+        #divImg {
+            transition: 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <span></span>
+    <h1 style="text-align: center; font-family: 標楷體;">AIOT17-JavaScipt-黃柏浩</h1>
+
+    <ul class="menu_list">
+        <li>jshwmenu</li>
+        <li id="1">jshw01</li>
+        <li id="2">jshw02</li>
+        <li id="3">jshw03</li>
+        <li id="4">jshw04</li>
+        <li id="5">jshw05</li>
+    </ul>
+    <!-- 圖片輪播 -->
+    <div id="divImg" class="img1" style="width: 500px; height:300px; margin: auto;"></div>
+    <div id="order" style="text-align: center;"></div>
+    <div id="divButton" class="">
+        <img src="hw_img/back.jpg" alt="" class="imgButton" id="but01">
+        <img src="hw_img/pause.jpg" alt="" class="imgButton" id="but02">
+        <img src="hw_img/gogo.jpg" alt="" class="imgButton" id="but03">
+    </div>
+    <div class="divText">點擊圖片來傳送</div>
+    <script>
+        var pause = false;
+        var obj = document.getElementById("divImg");
+        const tatal = 5;
+        var count = 2000;
+        obj.className = "c1";
+        setTimeout(f1, 1000);
+        function f1() {
+            if (pause == false) {  //如果暫停 則不計算數字
+                count++;
+            }
+            obj.className = "c" + count % tatal;
+            changeorder(count);
+            
+            console.log(count);
+            setTimeout(f1, 2000); //呼叫自己 再執行一次
+        }
+
+
+
+        document.getElementById("but01").addEventListener("click", function_of_button01, true);
+        document.getElementById("but02").addEventListener("click", function_of_button02, true);
+        document.getElementById("but03").addEventListener("click", function_of_button03, true);
+        document.getElementById("divImg").addEventListener("click", connect_to_web, true);
+        for (i = 1; i < tatal + 1; i++) {
+            $("#order").append(`<img id ="imgnum${i}" class="imgnumber" width="40px" src="hw_img/num${i}.png">  </img>`);
+        }
+        // $("span").css("color","red").css("margin","50px");
+        function changeorder(orderTH) {
+            $("#imgnum" + (orderTH % tatal + 1)).css("width", "80px");
+            $(".imgnumber").not("#imgnum" + (orderTH % tatal + 1)).css("width", "40px");
+        }
+        function function_of_button01() {
+            count--;
+            obj.className = "c" + count % tatal;
+            changeorder(count);
+            console.log(count);
+        }
+        function function_of_button02() {
+            if (pause == false) {
+                pause = true;
+                this.src = "hw_img/play.jpg";
+            } else {
+                pause = false;
+                this.src = "hw_img/pause.jpg";
+            }
+            obj.className = "c" + count % tatal;
+        }
+        function function_of_button03() {
+            count++;
+            obj.className = "c" + count % tatal;
+            changeorder(count);
+            console.log(count);
+        }
+        function connect_to_web() {
+            window.open(connect_href[count % tatal]);
+        }
+        $("*").css("backgroundSize", "contain").css(" backgroundPosition", "center").css("backgroundRepeat", "no-repeat");
+        var connect_href = ["https://zh.wikipedia.org/wiki/%E6%88%80%E4%B8%8A%E6%8F%9B%E8%A3%9D%E5%A8%83%E5%A8%83", "https://ani.gamer.com.tw/animeVideo.php?sn=28525", "https://www.books.com.tw/products/0010841480", "https://www.google.com/search?q=%E6%88%80%E4%B8%8A%E6%8F%9B%E8%A3%9D%E5%A8%83%E5%A8%83&sxsrf=APq-WBsS6s66NVhlTYyooDVea0L4KKR9KQ:1650265933223&tbm=isch&source=iu&ictx=1&vet=1&fir=f0VfHU4oOdlWqM%252CYwMUHkQWuh-IFM%252C_%253BHAHphBYDtypVrM%252CVJiFF3gaQz3rqM%252C_%253BFVnt8uwmu2au6M%252CYwMUHkQWuh-IFM%252C_%253BD19swWDUck1wBM%252CauPMs0g7Cz7kVM%252C_%253BzYcjHhnHm6Ft_M%252CfdcOLy4p0KCMcM%252C_%253BWSez4Phq3AjPpM%252CV95Prwoa_aHuyM%252C_%253BVWQQpa5ZK4rBEM%252CpZZA8RbAfSiPjM%252C_%253BKaUmnf3FIx3Q4M%252CGbSsnbxMODgwXM%252C_%253BLjh4hkUBFC8GkM%252CV95Prwoa_aHuyM%252C_%253BMcs-mo3ZHCqfoM%252CX80namMASlxQ-M%252C_&usg=AI4_-kRPKUuOuS4PITmuB9MvfL9z09n0_A&sa=X&ved=2ahUKEwi37-_Vh533AhUfyYsBHX6jDFwQ9QF6BAg-EAE#imgrc=zYcjHhnHm6Ft_M", "https://www.google.com/search?q=%E6%88%80%E4%B8%8A%E6%8F%9B%E8%A3%9D%E5%A8%83%E5%A8%83&sxsrf=APq-WBsS6s66NVhlTYyooDVea0L4KKR9KQ:1650265933223&tbm=isch&source=iu&ictx=1&vet=1&fir=f0VfHU4oOdlWqM%252CYwMUHkQWuh-IFM%252C_%253BHAHphBYDtypVrM%252CVJiFF3gaQz3rqM%252C_%253BFVnt8uwmu2au6M%252CYwMUHkQWuh-IFM%252C_%253BD19swWDUck1wBM%252CauPMs0g7Cz7kVM%252C_%253BzYcjHhnHm6Ft_M%252CfdcOLy4p0KCMcM%252C_%253BWSez4Phq3AjPpM%252CV95Prwoa_aHuyM%252C_%253BVWQQpa5ZK4rBEM%252CpZZA8RbAfSiPjM%252C_%253BKaUmnf3FIx3Q4M%252CGbSsnbxMODgwXM%252C_%253BLjh4hkUBFC8GkM%252CV95Prwoa_aHuyM%252C_%253BMcs-mo3ZHCqfoM%252CX80namMASlxQ-M%252C_&usg=AI4_-kRPKUuOuS4PITmuB9MvfL9z09n0_A&sa=X&ved=2ahUKEwi37-_Vh533AhUfyYsBHX6jDFwQ9QF6BAg-EAE#imgrc=WSez4Phq3AjPpM"]
+
+
+
+
+    </script>
+    <script src="jshw.js" ;></script>
+</body>
+
+</html>

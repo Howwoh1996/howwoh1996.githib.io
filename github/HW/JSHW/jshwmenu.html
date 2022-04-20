@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS HW MENU</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <link rel="stylesheet" href="jshw.css">
+
+    <style>
+        .img_menu{
+            position: absolute;
+            left: 100px;
+            transition: 0.5s;
+            width: 70%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>AIOT17-JavaScipt-黃柏浩</h1>
+
+    <ul class="menu_list">
+        <li id="1">jshw01</li>
+        <li id="2">jshw02</li>
+        <li id="3">jshw03</li>
+        <li id="4">jshw04</li>
+        <li id="5">jshw05</li>
+    </ul>
+    <img src="" class="img_menu" alt="" >
+    <script>
+        $(".menu_list li").click(go_to_the_page);
+        function go_to_the_page() {
+            console.log($(this).text())
+            window.location.href = $(this).text()+".html"; //頁面跳轉到該文字所指定的網頁
+        }
+        $("li").hover(li_hover1,li_hover2);
+        function li_hover1(){
+            $("img").attr("src",`hw_img/hwmenu0${this.id}.png`)
+            $("img").css("left",`${this.id*5}%`)
+        }
+        function li_hover2(){
+            $("img").attr("src",`hw_img/hwmenu0${this.id}.png`)
+        }
+
+    </script>
+
+
+
+
+
+
+</body>
+
+</html>
