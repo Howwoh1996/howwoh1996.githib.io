@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jshw01</title>
+    <style>
+        table{
+            background-color: antiquewhite;
+            border-collapse: collapse;
+            box-shadow: 28px 20px 15px black;
+            margin: 50px auto;
+        }
+        td{
+            border: 1px solid green;
+            background-color: aliceblue;
+            padding: 2px;
+            width: 70px;
+            height: 30px;
+            text-align: center;
+            margin: 4px;
+            box-shadow: 8px 8px 20px black;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-family: 標楷體;">AIOT17-JavaScipt-黃柏浩</h1>
+    <div style="width: 600px; margin:50px auto; text-align: center;">
+    <a href="jshw01.html">jshw01</a>
+    </div>
+
+
+
+
+    <script>
+        function mul(a,b){
+            document.write(`${b}*${a}=${a*b}`);
+        }
+        function td(a,b){
+            document.write("<td>");
+            mul(a,b);
+            document.write("</td>");
+        }
+        function tr(i){
+            document.write("<tr>")
+            for(d=1;d<10;d++){
+                td(i,d);
+            }
+            document.write("</tr>")
+        }
+        function table(){
+            document.write("<table>")
+            for(c=1;c<10;c++){
+                tr(c);
+            }
+            document.write("</table>")
+        }
+        table();
+    </script>
+    
+</body>
+</html>
