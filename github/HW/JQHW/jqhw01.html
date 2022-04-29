@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <link rel="stylesheet" href="jqhw.css">
+    <title>JQHW01 評點製作</title>
+    <style>
+        .imgcontainer img {
+            border-radius: 100%;
+        }
+        .imgcontainer {
+            padding: 15px;
+            width: 75%;
+            margin: 0 auto;
+            background-color: rgb(136, 178, 214);
+            text-align: center;
+            height: 300px;
+        }
+
+        .score{
+            margin: 15;
+            text-align: center;
+            font-size: 300%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1></h1>
+    <ul class="menu"></ul>
+    <div class="readme">
+        <p>需要概念: hover事件和click事件 <br>
+            運用this指定到所滑到的圖片 <br>
+            用prevAll指定其他所要選的圖片<br>
+            一起做圖片修改<br>
+            click事件之後 要使hover事件失效<br>
+            可以使用一個變數(Boolean)儲存要不要啟用hover
+        </p>
+    </div>
+
+
+    <div class="imgcontainer">
+        <img src="../JSHW/hw_img/rm01.png" width="17%" id="1">
+        <img src="../JSHW/hw_img/rm01.png" width="17%" id="2">
+        <img src="../JSHW/hw_img/rm01.png" width="17%" id="3">
+        <img src="../JSHW/hw_img/rm01.png" width="17%" id="4">
+        <img src="../JSHW/hw_img/rm01.png" width="17%" id="5">
+        <p class="score"></p>
+    </div>
+
+    <script>
+        console.log($(".imgcontainer img"));
+        let lock = false;
+        $(".imgcontainer img").hover(function () {    //可以匿名函數  不能箭頭 THIS會有問題  滑到上面顯示目前分數
+            if (lock == false) {
+                $(this).attr("src", "../JSHW/hw_img/rm02.png");
+                $(this).prevAll().attr("src", "../JSHW/hw_img/rm02.png");
+                $(".score").text("打分中...【" + this.id + "】");
+            }
+        }, function () {
+            if (lock == false) {
+                $(this).attr("src", "../JSHW/hw_img/rm01.png");
+                $(this).prevAll().attr("src", "../JSHW/hw_img/rm01.png");
+                $(".score").text("");
+            }
+        })
+        
+        $(".imgcontainer img").click(function () {
+            $(this).attr("src", "../JSHW/hw_img/rm02.png");
+            $(this).prevAll().attr("src", "../JSHW/hw_img/rm02.png");
+            $(".score").text("你給的評分是【" + this.id + "】/5");
+            lock = true;
+        })
+
+
+
+
+    </script>
+
+
+
+
+
+    <script src="jqhw.js"></script>
+   
+
+
+</body>
+
+</html>

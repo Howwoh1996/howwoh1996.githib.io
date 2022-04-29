@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <link rel="stylesheet" href="jqhw.css">
+    <title>jqhw03 圖片置中縮放</title>
+    <style>
+        .outer {
+            height: calc(80vh);
+            width: calc(90vw);
+            border: 1px solid #f00;
+            margin: 0px auto;
+        }
+
+        .inner {
+            margin: 20vh auto;
+            text-align: center;
+        }
+
+        /* img{
+            height: 40vh;
+        } */
+        /* h1{
+            height: 15vh;
+            margin: 0;
+            text-align: center;
+        } */
+    </style>
+</head>
+
+<body>
+    <h1></h1>
+    <ul class="menu"></ul>
+    <div class="readme">
+        <p>實踐概念:<br>
+            利用VH 與VW 指的是視窗高度與寬度 <br>
+            圖片的高度+其margin =整個盒子的高度 (寬度亦同) <br>
+            即可讓圖片隨著視窗的比例縮放 同時維持著置中
+            事件的部分 可以用$(window).resize(圖片改變的函數);
+        </p>
+    </div>
+    <div class="outer">
+        <div class="inner">
+            <img src="hw_img/rm01.png">
+        </div>
+    </div>
+    <script>
+        console.log($("img").height());
+        console.log($("img").width());
+        function move_img() {
+            let temp = $("img").height();
+            $("img").height($(window).height() / 2);
+            $("img").width($(window).width() / 2);
+        }
+        move_img();
+        $(window).resize(move_img);
+
+
+    </script>
+    <script src="jqhw.js"></script>
+
+</body>
+
+</html>

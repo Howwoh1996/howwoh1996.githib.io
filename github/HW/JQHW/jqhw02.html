@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <link rel="stylesheet" href="jqhw.css">
+    <title>JQHW02 圖片輪播</title>
+
+
+    <style>
+        .dot li {
+            /*點本身*/
+            border: 1px solid rgb(114, 28, 28);
+            border-radius: 35%;
+            margin: 0 5px;
+            width: 30px;
+            height: 10px;
+            /*強制指定文字區域  指定的小小的 有點的效果*/
+            list-style: none;
+            /*讓點消失*/
+            background-color: red;
+        }
+
+        .imgul li {
+            list-style: none;
+            margin: 0px;
+        }
+
+        .dot {
+            /*點的UL*/
+            padding-left: 0px;
+            /* UL有內建內距 會縮排  要歸零 */
+            bottom: 50px;
+            width: 100%;
+            display: flex;
+            /*水平放置*/
+            justify-content: center;
+            /*置中 設置在ul上*/
+            
+            position: absolute;
+        }
+
+        .imgul {
+            display: flex;
+            left: 0px;
+            /*很長的圖片串 用起始位置決定是哪一張圖 每800一張*/
+            position: absolute;
+            /*一定要有*/
+            margin: 0px;
+            padding-left: 0px;
+            /* UL有內建內距 會縮排  要歸零 */
+            transition: 0.5s;
+        }
+
+        .wrapper {
+            margin: auto;
+            width: 800px;
+            height: 450px;
+            overflow: hidden;
+            /*超出格子不顯示 來隱藏超出的圖片*/
+            border: 1px solid saddlebrown;
+            position: relative;
+        }
+
+        .button_left {
+            position: absolute;
+            top: 45%;
+            width: 40px;
+            z-index: 1;
+        }
+
+        .button_right {
+            position: absolute;
+            top: 45%;
+            width: 40px;
+            right: 0px;
+            z-index: 1;
+            /*覆蓋 原始圖層 原始Z軸為0*/
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1></h1>
+    <ul class="menu"></ul>
+    <div class="readme">
+        <p>需要概念:<br>
+            圖片的切換可以使用ul的橫向放置來實現 <br>
+            將多個圖放在ul的li裡面 調整ul的left屬性 負的越多就會切換到越後面的圖 <br>
+            ul會內建有縮排的效果 要取消可以padding:0 <br>
+            圖片的輪播可以使用一個變數 不斷的增加來達到效果 (循環可以使用餘數的概念)<br>
+            暫停輪播 設置一個變數(boolean)來關閉輪播效果<br>
+            對於圖層置中的控制 圖層覆蓋()
+        </p>
+    </div>
+    <div class="wrapper">
+        <ul class="imgul">
+            <li> <img src="../JSHW/hw_img/hw04img01.jpg" width="800"> </li>
+            <li><img src="../JSHW/hw_img/hw04img02.jpg" width="800" alt=""> </li>
+            <li> <img src="../JSHW/hw_img/hw04img04.jpg" width="800" height="450"> </li>
+            <li><img src="../JSHW/hw_img/hw04img05.png" width="800" alt=""></li>
+        </ul>
+        <ul class="dot">
+            <li id="1"></li>
+            <li id="2"></li>
+            <li id="3"></li>
+            <li id="4"></li>
+        </ul>
+        <img src="../JSHW/hw_img/back.jpg" class="button_left" alt="">
+        <img src="../JSHW/hw_img/gogo.jpg" class="button_right" alt="">
+    </div>
+    <script>
+        var nowid = 1; //nowid: control which is the picture playing  (from 1 to 4)
+        var stopmove = false;   //when stopmove is true stop picture move
+        $(".wrapper").hover(function () {   //when mouse is on the picture stop moving
+            stopmove = true;
+        }, function () {
+            stopmove = false;
+        })
+        $(".dot").find("li").hover(function_of_dot_hover,);  //mouse on dot to choose picture
+        function function_of_dot_hover() {
+            $(".dot").find("li").css("backgroundColor", "red");
+            $(this).css("background-color", "black");
+            $(".imgul").css("left", 800 - this.id * 800);  //change picture
+            nowid = this.id;
+        }
+
+        setInterval(auto_playing, 2000);
+        function auto_playing() {
+            if (stopmove == false) {
+                nowid++;
+                if (nowid > 4) {
+                    nowid -= 4;
+                }
+                $(".imgul").css("left", 800 - nowid * 800);  //change picture
+                $(".dot").find("li").css("backgroundColor", "red");
+                $("#" + nowid).css("backgroundColor", "black");
+            }
+        }
+        $(".button_left").click(function () {
+            nowid--;
+            if (nowid < 1) {
+                nowid += 4;
+            }
+            $(".imgul").css("left", 800 - nowid * 800);  //change picture
+            $(".dot").find("li").css("backgroundColor", "red");
+            $("#" + nowid).css("backgroundColor", "black");
+        })
+        $(".button_right").click(function () {
+            nowid++;
+            if (nowid > 4) {
+                nowid -= 4;
+            }
+            $(".imgul").css("left", 800 - nowid * 800);  //change picture
+            $(".dot").find("li").css("backgroundColor", "red");
+            $("#" + nowid).css("backgroundColor", "black");
+        })
+
+    </script>
+    <script src="jqhw.js"></script>
+
+
+
+</body>
+
+</html>

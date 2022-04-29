@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ;></script>
+    <script src="taiwan_districts.js" ;></script>
+    <link rel="stylesheet" href="jqhw.css">
+    <title>jqhw04</title>
+    <style>
+        td {
+            border: 1px solid black;
+        }
+
+        table {
+            margin-left: 25vw;
+        }
+
+        .option {
+            float: right;
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1></h1>
+    <ul class="menu"></ul>
+    <div class="readme">
+        <p>實踐概念:<br>
+            抓取物件與陣列的值<br>
+            rowspan 拓展<br>
+            設定option的value 可以方便之後識別要抓取選項
+        </p>
+    </div>
+
+    <div class="option">
+        <select name="city" id="city"></select>
+        <select name="" id="zip"></select>
+    </div>
+    <table></table>
+    <script>
+        var mydata = data;
+        for (i = 0; i < mydata.length; i++) {
+            for (j = 0; j < mydata[i].districts.length; j++) {   //有多少資料就新增幾列
+                $("table").append(`<tr ></tr>`);
+                if (j == 0) {    //每一區的第一列第一格向下合併儲存格 
+                    $("tr").last().append(`<td rowspan=${mydata[i].districts.length}> ${mydata[i].name} </td>`)
+                }              //再創兩格給號碼和區
+                $("tr").last().append(`<td> ${mydata[i].districts[j].zip}</td><td> ${mydata[i].districts[j].name}</td>`)
+            }
+        }
+        for (i = 0; i < mydata.length; i++) {
+            $("#city").append(`<option value="${i}">${mydata[i].name}</option>`)  //value 可以方便抓第幾個選項 
+        }
+        $("#city").change(function () {
+            $("#zip").empty();   //清空
+            for (j = 0; j < mydata[this.value].districts.length; j++) {      //被選中的選項的值
+                $("#zip").append(`<option>${mydata[this.value].districts[j].zip} ${mydata[this.value].districts[j].name}</option>`)
+            }
+        });
+    </script>
+    <script src="jqhw.js"></script>
+</body>
+
+</html>

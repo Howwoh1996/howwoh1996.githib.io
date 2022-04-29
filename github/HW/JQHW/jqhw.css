@@ -1,0 +1,45 @@
+h1{
+    font-family: 標楷體;
+    text-align: center;
+    background-color: black;
+    color: aliceblue;
+    height: 60px;
+    line-height: 60px;
+    margin-top: 0;
+}
+.menu{
+    float: left;
+    position: absolute;
+}
+.menu li{
+    width: 100px;
+    height: 35px;
+    text-align: center;
+    border-radius: 35%;
+    background-color: rgb(223, 118, 223);
+    margin: 20px;
+    line-height: 35px;
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+body{
+    background-color: rgba(190, 214, 234, 0.849);
+}
+.readme{
+    font-size: 30px;
+    height: 500px;
+    width: 500px;
+    position: absolute;
+    background-color: aliceblue;
+    border-radius: 20%;
+    padding: 2%;
+    opacity: 0;
+    top: 10vh;
+    left: 30vw;
+    /* display: none; */
+    transition: 1s;
+    z-index: -2;
+    display: none;
+}
