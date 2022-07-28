@@ -1,0 +1,33 @@
+function nav_append(){
+$("body").prepend(' <header class="navbar top-navbar navbar-expand-md navbar-light">'
++'<nav class="container-xxl flex-wrap flex-md-nowrap navbar-">'
++'  <a class="navbar-brand" href="/">'
++'      <img src="image/howscode.png" alt="" class="" width="40" height="32">'
++'      How\'s code'
++'  </a>'
++'  <div class="navbar-collapse ">'
++'      <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav pt-2 py-md-0">'
++'          <li class="nav-item col-6 col-md-auto">'
++'              <a class="p-2 nav-link" href="/"> Home</a>'
++'          </li>'
++'</ul>'
++' <ul class="navbar-nav flex-row flex-wrap ms-md-auto">'
++'   <li class="nav-item col-6 col-md-auto">'
++'              <a class="nav-link p-2" href="/" target="_blank">'
++'                  search'
++'              </a>'
++'          </li>'
++'        </ul>'
++'    </div>'
++'</nav>'
++'</header>'
++'<div class="container-fluid  main-div">'
++'<div class="row main-row">'
++'    <div class="col-2 sidebar">'
++'        123'
++'    </div>'
++'    <div class="col-9 main">')
+
+
+}
+nav_append();

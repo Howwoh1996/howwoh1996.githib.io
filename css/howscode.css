@@ -1,0 +1,29 @@
+.top-navbar {
+    background-color: skyblue;
+}
+
+.sidebar {
+    background-color: lightgreen;
+    height: 100%;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+}
+
+.main-div {
+    height: 100%;
+}
+
+.main-row {
+    height: 100%;
+}
+
+.main-row .main {
+    background-color: snow;
+}
