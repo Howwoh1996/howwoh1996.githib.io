@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="css/howscode.css">
 
     <title>How's code</title>
-
+   
 
 </head>
 
@@ -29,29 +29,29 @@
                 1235
             </div>
             <div class="col-9 main">
-
-
-                <h1>js 時間操作語法與注意事項 </h1>
+                <h1>JAVA 從request 和 session 取參數 </h1>
                 <p>
-                    setTimeout(function(){<br>
-                    do-something() <br>
-                    },1000) <br>
-
-                    等一秒後 執行該 函數內的行為 <br>
-                    1000 表示1000毫秒 <br>
-
-                    setInterval(function(){ <br>
-                    do-something() <br>
-                    },1000) <br>
-
-                    等一秒後 執行該 函數內的行為 之後每一秒都執行一次函數內的行為 <br>
-
-                    等一秒 並不會卡住後續的動作 <br> 實際操作上 是呼叫另一個執行緒去做的
-
+                    從html端發送的form 請求 <br>
+                    在JAVA servlet端 要獲取參數的語法如下:<br>
+                    request.getParameter("該變數的名稱");<br>
+                    這個方法拿出來的東西 必定是String<br>
+                    String 比較的時候 記得使用.equal()的語法<br>
+                    JAVA物件的比較必須這樣使用 ==是不能用的<br>
+                    如果是在form裡面 沒有填值 則會是空字串 也就是""<br>
+                    如果取的變數名稱不存在 則會回傳null <br>
+                    在比較null時 不可使用.equal() 要用==null<br> 
+                    <br>
+                    session的設定參數 使用的方法是<br>
+                    session.setAttribute("要取的變數名稱",某某東西)<br>
+                    取用參數的方法是session.getAttribute("變數名稱")<br>
+                    取出來的時候 是物件Object <br>
+                    要快速取用可以強制轉型<br>
+                    例如我存的是一個String的情況<br>
+                    就可以用<br>
+                    String myString=(String)session.getAttribute("我的變數名稱");<br>
+                    就可以直接取出來用了<br>
+                
                 </p>
-
-
-
 
 
 
@@ -63,7 +63,7 @@
             </div>
         </div>
     </div>
-
+    
     <script src="js/header-nav.js"></script>
 
 </body>
