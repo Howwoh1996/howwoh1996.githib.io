@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/bcc692acd2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/howscode.css">
+
+    <title>How's code</title>
+   
+
+</head>
+
+<body>
+    <div class="headerpage"></div>
+    <div class="container-fluid  main-div">
+        <div class="row main-row">
+            <div class="col-2 sidebar sidebar-page">
+                1235
+            </div>
+            <div class="col-9 main">
+            <h1> postman 與 response 取得後台資料</h1>
+            <p>
+                在HTML網頁中，如果想要拿到後台資料(例如DB內的資料)，就需要去呼叫後端程式。
+                在JAVA WEB系統內，雖然可以透過JSP，在JSP中直接寫讀取資料庫的JAVA程式來完成。
+                但JSP的混合寫法，因為編譯先後順序問題，時常會發生奇怪的錯誤，也不符合前後端分離的原則，
+                所以在此提供一種在HTML中使用JS語法，呼叫SERVLET來取得後端資料的方法。
+            </p>
+            <p>
+                在SERVLET端，在doget裡面讀取想要的資料庫資料，並把該筆資料轉換JSON的字串格式，
+                寫到response裡面。
+            </p>
+            <p>
+                在HTML端，利用POSTMAN快速模擬所需要的程式碼。
+                選擇JS語法(建議JQuery ajax)，
+                其中得response即是後臺給的回應(建議是一個JSON的字串)，
+                然後將字串轉換成JS的物件，即可方便的使用。
+            </p>
+            <p>
+                額外小技巧:
+                也可以把一些需要的參數(例如使用者ID)等等的資料放在Request中，後台得到該筆資料，再去搜尋特定的資料庫資料再回傳。
+                也可以先在登入寫入session，後台接到請求時，先去讀取session資料，寫到response裡面。(變相的實行用JS讀取session的資料)。
+            </p>
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/header-nav.js"></script>
+
+</body>
+
+</html>
