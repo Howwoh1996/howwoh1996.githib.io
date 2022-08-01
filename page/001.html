@@ -46,7 +46,11 @@
         .main-row .main {
             background-color: snow;
         }
+        .sidebar li{
+            font-size: smaller;
+        }
     </style>
+
 
 </head>
 
@@ -54,7 +58,7 @@
     <header class="navbar top-navbar navbar-expand-md navbar-light">
         <nav class="container-xxl flex-wrap flex-md-nowrap navbar-">
             <a class="navbar-brand" href="/">
-                <img src="image/howscode.png" alt="" class="" width="40" height="32">
+                <img src="../image/howscode.png" alt="" class="" width="40" height="32">
                 How's code
             </a>
             <div class="navbar-collapse ">
@@ -81,7 +85,7 @@
     <div class="container-fluid  main-div">
         <div class="row main-row">
             <div class="col-2 sidebar">
-                123
+                
             </div>
             <div class="col-9 main">
 
@@ -90,9 +94,9 @@
                 <h1>JAVA 簡易網頁建置與安裝</h1>
                 需要工具:
                 <ul>
-                    <li>Eclipse  <a href="https://www.eclipse.org/downloads/packages/"> 點我前往</a><img src="image/001.png" height="200px"></li>
-                    <li>Apache Tomcat <a href="https://tomcat.apache.org/download-10.cgi#10.0.23">點我前往</a><img src="image/002.png" height="200px"> </li>
-                    <li>Appserv (MySQL) <a href="https://www.appserv.org/en/download/">點我前往</a><img src="image/003.png" height="200px"> </li>
+                    <li>Eclipse  <a href="https://www.eclipse.org/downloads/packages/"> 點我前往</a><img src="../image/001.png" height="200px"></li>
+                    <li>Apache Tomcat <a href="https://tomcat.apache.org/download-10.cgi#10.0.23">點我前往</a><img src="../image/002.png" height="200px"> </li>
+                    <li>Appserv (MySQL) <a href="https://www.appserv.org/en/download/">點我前往</a><img src="../image/003.png" height="200px"> </li>
                 </ul>
 
                 
@@ -117,10 +121,18 @@
 
     </div>
 
-
+<a href=""></a>
 
     <script>
         let title = "JAVA 簡易網頁建置與安裝";
+    </script>
+    <script src="../js/data.js"></script>
+
+    <script>
+        $(".sidebar").append("<ul></ul>")
+        for(let i=0;i<page_data.length;i++){
+            $(".sidebar ul").append("<li> <a href='"+page_data[i].pageURL+"'> "+page_data[i].pageID+":"+page_data[i].title+"</a></li>")
+        }
     </script>
 </body>
 

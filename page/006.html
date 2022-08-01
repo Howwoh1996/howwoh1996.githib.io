@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/bcc692acd2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/howscode.css">
+
+    <title>How's code</title>
+  
+
+</head>
+
+<body>
+    <div class="headerpage"></div>
+    <div class="container-fluid  main-div">
+        <div class="row main-row">
+            <div class="col-2 sidebar sidebar-page">
+
+            </div>
+            <div class="col-9 main">
+            <h1>
+                實現輪播功能-小動畫呈現
+
+            </h1>
+            <p>
+                輪播功能:
+                將數張圖片以ul>li的方式，用display:flex(橫向排列)，
+                手動設定圖片的高度與寬度，去掉UL的margin與padding，
+                去掉li的list-type-decoration，
+                外層div使用overflow:hidden(超出的部分隱藏)，
+                在JS中，使用setInterval，不斷增加圖片的位置(left)(可以設定%N來回歸第一張照片)，
+                搭配transition屬性，就可以做出簡單的輪播
+
+
+
+            </p>
+            <p>
+                小動畫呈現:
+                將欲呈現動畫的圖片名字取的有順序性(例如101.png~~199.png)
+                用setTimeout  將圖片的src屬性改變  然後呼叫自己
+                當到最後一張圖片時，停止呼叫自己，即完成小動畫。
+            </p>
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/header-nav.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/sidebar.js"></script>
+
+</body>
+
+</html>
