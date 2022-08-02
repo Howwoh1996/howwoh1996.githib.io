@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/bcc692acd2.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="../css/howscode.css">
+
+    <title>How's code</title>
+   
+
+</head>
+
+<body>
+    <div class="headerpage"></div>
+    <div class="container-fluid  main-div">
+        <div class="row main-row">
+            <div class="col-2 sidebar sidebar-page">
+            </div>
+            <div class="col-9 main">
+                <h2 id="sql-inner-join-group-by">SQL語法 inner join &amp; group by</h2>
+<ul>
+<li>inner join</li>
+</ul>
+<p>如圖:</p>
+<img src="../image/009-1.png" alt="">
+<p>當我有兩個資料表，想要合併顯示時，就可以使用inner join</p>
+<p>如圖:</p>
+<img src="../image/009-2.png" alt="">
+<p>當我這樣顯示時會發現他一共列出了18筆資料<br>但是我希望可以同sID再顯示就好</p>
+<p>如圖:</p>
+<img src="../image/009-3.png" alt="">
+<p>加上where篩選 就可以完成這件事情</p>
+<p>如圖:</p>
+<img src="../image/009-4.png" alt="">
+<p>如果要篩選特定情況的資料 則多加一個條件<br>以此圖為例 就是想要篩出成績不及個的人的資料</p>
+<p>如圖: </p>
+<img src="../image/009-5.png" alt="">
+<p>想要得到成績的加總
+則使用group by 將同一個人的成績加總<br>所以把人 group起來<br>SUM 是加總<br>(score) 則是指定score這項資料</p>
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/header-nav.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/sidebar.js"></script>
+
+</body>
+
+</html>
