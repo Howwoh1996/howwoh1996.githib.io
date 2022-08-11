@@ -20,3 +20,4 @@ ReactDOM.render(虛擬DOM,要丟入的容器)
 虛擬DOM 是在JSX用 const 宣告的
 要丟入的容器 取得方法:document.getElementById('myId')
 
+

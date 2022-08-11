@@ -70,6 +70,21 @@ page_data =[
         title : "VS code 實用小技巧(HTML)",
         pageURL : "012.html",
         tags :["HTML","VS Code"]
+    },{
+        pageID : "013",
+        title : "bootstap 新手入門",
+        pageURL : "013.html",
+        tags :["bootstrap",""]
+    },{
+        pageID : "014",
+        title : "JQuery 常用事件",
+        pageURL : "014.html",
+        tags :["JQuery",""]
+    },{
+        pageID : "015",
+        title : "實用JAR分享",
+        pageURL : "015.html",
+        tags :["JAVA","JAR"]
     }
     
 ]
