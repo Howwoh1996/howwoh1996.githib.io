@@ -85,6 +85,11 @@ page_data =[
         title : "實用JAR分享",
         pageURL : "015.html",
         tags :["JAVA","JAR"]
+    },,{
+        pageID : "016",
+        title : "圖標的地點移動",
+        pageURL : "016.html",
+        tags :["HTML","JS","JQuery"]
     }
     
 ]
