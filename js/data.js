@@ -85,11 +85,31 @@ page_data =[
         title : "實用JAR分享",
         pageURL : "015.html",
         tags :["JAVA","JAR"]
-    },,{
+    },{
         pageID : "016",
         title : "圖標的地點移動",
         pageURL : "016.html",
         tags :["HTML","JS","JQuery"]
+    },{
+        pageID : "017",
+        title : "header、sidebar 引入方法",
+        pageURL : "017.html",
+        tags :["HTML","JS","JQuery"]
+    },{
+        pageID : "018",
+        title : "JQuery 概述",
+        pageURL : "018.html",
+        tags :["JQuery"]
+    },{
+        pageID : "019",
+        title : "常見的網頁攻擊 SQL Injection",
+        pageURL : "019.html",
+        tags :["SQL"]
+    },{
+        pageID : "020",
+        title : "常見的網頁攻擊 XSS (Cross-Site Scripting)",
+        pageURL : "020.html",
+        tags :["HTML","JS"]
     }
     
 ]
