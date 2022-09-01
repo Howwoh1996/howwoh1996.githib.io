@@ -22,8 +22,9 @@
         }
 
         .sidebar {
-            background-color: lightgreen;
+            background-color: lightblue;
             height: 100%;
+            overflow: auto;
         }
 
         html {
@@ -46,15 +47,21 @@
         .main-row .main {
             background-color: snow;
         }
-        .myhead img{
+
+        .myhead img {
             border-radius: 100%;
-            width: 15rem;
-            height: 15rem;
+            width: 50%;
+
             margin: auto;
             border: 2px solid blue;
         }
-        .myhead{
+
+        .myhead {
             text-align: center;
+        }
+
+        .intro ul {
+            list-style-type: none;
         }
     </style>
 
@@ -63,7 +70,7 @@
 <body>
     <header class="navbar top-navbar navbar-expand-md navbar-light">
         <nav class="container-xxl flex-wrap flex-md-nowrap navbar-">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="home.html">
                 <img src="image/howscode.png" alt="" class="" width="40" height="32">
                 How's code
             </a>
@@ -91,17 +98,50 @@
         <div class="row main-row">
             <div class="col-4 sidebar">
                 <div class="myhead">
-                    <img  src="image/PH.png" alt="">
+                    <img src="image/PH.png">
                 </div>
                 <div class="intro">
-                    <ul>
-                        <li>Name: 黃柏浩</li>
-                        <li></li>
-                        <li></li>
-                    </ul>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>名字</td>
+                                <td>黃柏浩</td>
+                            </tr>
+                            <tr>
+                                <td>E-mail</td>
+                                <td>zzhowwoh.am03@g2.nctu.edu.tw</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                    <div class="intro">
+                        <div class="card">
+                            <img src="image/home-1.png" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h3 id="how-s-code"> <a href="page/001.html"> How&#39;s code</a></h1>
+                                    <p>取名為How’s code主要是因為本人的名字有個浩字，音同how，有我本人的程式碼專區，另外也因同house code，有程式碼之家的意思。</p>
+                                    <p>期許自己將這些技術整理成自己的程式碼之家，可以給其他人一點指引，也是讓自己不會忘記的一個方法。</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-8 main">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <img src="image/home-2.png" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h3 id="how-s-code"> <a href="game/game.html">大富翁</a>  </h1>
+                                    <p>自製一個網頁版的大富翁，用來練習JS語法，也透過製作遊戲的方式，熟悉物件導向的應用。</p>
+                                    <p>使用的素材如果有侵犯盜版權，請EMAIL通知，會盡速修正。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+
+
 
 
 

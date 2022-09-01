@@ -1,4 +1,3 @@
-```python
 # 遊戲規則:吹氣球 每吹一次有不同的機率會爆炸 把氣球綁起來 會獲得關於氣球大小的積分
 # 爆炸獲得 30%分數
 # 吹氣球 破掉機率 0 , 0.02 , 0.04 , 0.07 , 0.1 ,0.15 , 0.2 , 0.25 , 0.3 , 0.4 , 0.5
@@ -47,5 +46,3 @@ rank=[(x,point_count(x)) for x in times_arr]
 print(sorted(rank, key=lambda r:r[1],reverse=True))
  
 
-
-```

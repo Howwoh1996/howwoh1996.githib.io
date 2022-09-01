@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <style>
+        div {
+            border: 1px solid black;
+        }
+
+        .map td {
+            width: 7rem;
+            height: 7rem;
+            border: 1px solid blue;
+            
+        }
+
+        .head_in_map {
+            width: 3rem;
+            margin: 0.2rem;
+        }
+        .map table{
+            background-image: url("image/map01.jpg");
+            background-attachment: fixed;
+        }
+        .map-1011{
+            background-image: url("image/chance.jpg");
+            background-size: cover;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="root">
+        <div class="start_setting">
+            <div class="player_number_setting">
+                <input type="number" id="player_number">
+                <button id="player_number_button">確定人數</button>
+            </div>
+            <div class="name_setting"></div>
+        </div>
+
+
+        <div class="game">
+            <div class="row">
+                <div class="col-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="player_information">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>角色名稱</th>
+                                            <th>位置</th>
+                                            <th>錢</th>
+                                            <th>金幣</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="information_tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="roll" style="display: none;"><button class="roll_button">roll</button></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <span>messenge:</span>
+                            <div class="messenge">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-8">
+                    <div class="map">
+                        <table>
+                            <tr>
+                                <td class="map-1001"></td>
+                                <td class="map-1002"></td>
+                                <td class="map-1003"></td>
+                                <td class="map-1004"></td>
+                                <td class="map-1005"></td>
+                                <td class="map-1006"></td>
+                                <td class="map-1007"></td>
+                                <td class="map-1008"></td>
+                            </tr>
+                            <tr>
+                                <td class="map-1024"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="map-1009"></td>
+                            </tr>
+                            <tr>
+                                <td class="map-1023"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="map-1010"></td>
+                            </tr>
+                            <tr>
+                                <td class="map-1022"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="map-1011"></td>
+                            </tr>
+                            <tr>
+                                <td class="map-1021"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="map-1012"></td>
+                            </tr>
+                            <tr>
+                                <td class="map-1020"></td>
+                                <td class="map-1019"></td>
+                                <td class="map-1018"></td>
+                                <td class="map-1017"></td>
+                                <td class="map-1016"></td>
+                                <td class="map-1015"></td>
+                                <td class="map-1014"></td>
+                                <td class="map-1013"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        class player {
+            constructor(name_string) {
+                var player_name_arr = ["小丹尼", "金貝貝", "孫小美", "錢夫人", "阿土伯", "忍太郎", "宮本寶藏", "沙隆巴斯", "烏咪", "糖糖", "約翰喬", "莎拉公主"];
+                this.position = 1;
+                this.money = 0;
+                this.coin = 0;
+                this.id = Math.floor(Math.random() * player_name_arr.length);
+                this.headURL = "image/" + player_name_arr[this.id] + ".png"
+                if (name_string == "") {
+                    this.name = player_name_arr[this.id];
+                } else {
+                    this.name = name_string;
+                }
+            }
+            roll() {
+                let go_steps = Math.floor(Math.random() * 6) + 1;
+                this.position += go_steps;
+                if (this.position > 24) {
+                    this.position -= 24;
+                    this.money += 1000;
+                }
+                return go_steps;
+            }
+        }
+        var the_game = null;
+        var messenge = ["", "", "", "", "", ""];
+        var players = [];
+        $("#player_number_button").click(function () {
+            for (let i = 0; i < $("#player_number").val(); i++) {
+                $(".name_setting").append(`<input type="text" class="player_name_${i + 1}">`);
+            }
+            $(".player_number_setting").css("display", "none");
+            $(".name_setting").append(`<button id="player_name_button">確定名字</button>`);
+            $("#player_name_button").click(function () {
+                for (let i = 0; i < $("#player_number").val(); i++) {
+                    console.log(players)
+                    players.unshift(new player($(".player_name_" + (i + 1)).val()));
+                    console.log(i)
+                }
+                show_information();
+                $(".name_setting").css("display", "none");
+                the_game = new game(players);
+                $(".roll").css("display", "block")
+            })
+        })
+
+        function show_information() {
+            $(".information_tbody").empty();
+            $(".map td").empty();
+            for (let i = 0; i < players.length; i++) {
+                $(".information_tbody").append(`<tr><td>${players[i].name}</td><td>${players[i].position}</td><td>${players[i].money}</td><td>${players[i].coin}</td></tr>`);
+                let place = 1000 + players[i].position;
+                $(".map-" + place).append(`<img class="head_in_map" src="${players[i].headURL}">`)
+            }
+        }
+        $(".roll_button").click(function () {
+
+            the_game.roll();
+            show_information();
+
+
+        })
+        class game {
+            constructor(players) {
+                this.player_turn = 0;
+                this.total_turn = 0;
+                this.players = players;
+                this.day = 0;
+                this.messenge = ["", "", "", "", "", ""];
+            }
+            roll() {
+                let go_steps = this.players[this.player_turn].roll();
+                this.show_messenge(`${players[this.player_turn].name} go ${go_steps} steps`);
+                this.player_turn += 1;
+                this.player_turn %= (this.players.length);
+                this.total_turn += 1;
+
+            }
+            show_messenge(messenge_string) {
+                this.messenge.unshift(messenge_string + "(Day : " + this.total_turn + " )");
+                $(".messenge").empty();
+                for (let i = 0; i < 5; i++) {
+                    $(".messenge").append(this.messenge[i] + " <br>");
+                }
+            }
+        }
+
+        // function show_messenge(messenge_string) {
+        //     messenge.unshift(messenge_string);
+        //     $(".messenge").empty();
+        //     for (i = 0; i < messenge.length && i < 5; i++) {
+        //         $(".messenge").append(messenge[i] + `(Day: ${})`+"<br>");
+        //     }
+        // }
+
+
+
+    </script>
+
+</body>
+
+</html>
