@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <style>
+        .img-div {
+            text-align: center;
+        }
+
+        .bloom-img {
+            width: 7rem;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h1>規則:</h1>
+                    <p>
+                        # 遊戲規則:吹氣球 每吹一次有不同的機率會爆炸 把氣球綁起來 會獲得關於氣球大小的積分 並再吹下一顆 <br>
+                        # 爆炸獲得 30%分數 <br>
+                        # 吹氣球 破掉機率 0 , 0.02 , 0.04 , 0.07 , 0.1 ,0.15 , 0.2 , 0.25 , 0.3 , 0.4 , 0.5<br>
+                        # 積分增加 2000 2800 3600 4400 5200 6000 6800 7600 8400 9200<br>
+                        # 積分累加 2000 4800 8400 12800 18000 24000 30800 38200 46800 <br>
+                        # 找出最好的策略 可以獲得最多的分數<br>
+                    </p>
+                    <p><a href="game01-py.html">PYTHON解答</a></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="text-align: center;">
+                    <button class="blow_button"> 吹氣</button>
+                    <button class="close_button"> 綁氣球</button>
+                    <button class="reset_button"> 重置</button>
+                    <table class="table total">
+                        <thead>
+                            <th>總得分</th>
+                            <th>總吹氣次數</th>
+                            <th>平均得分</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col img-div">
+                    <img class="bloom-img" src="image/game01-1.png" alt="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table class="table bloom">
+                        <thead>
+                            <tr>
+                                <th>目前吹氣次數</th>
+                                <th>目前分數</th>
+                                <th>破掉機率</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var total_point = 0;
+        var current_point = 0;
+        var total_times = 0;
+        var current_times = 0;
+        var posibility_arr = [0, 0.02, 0.04, 0.07, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1];
+        var point_arr = [0, 2000, 4800, 8400, 12800, 18000, 24000, 30800, 38400, 46800, 56000, 66000, 76800, 88400, 100800, 114000];
+        var bloom_width_arr = ["7rem", "9rem", "11rem", "13rem", "15rem", "17rem", "19rem", "21rem", "23rem", "25rem", "27rem", "29rem", "31rem", "33rem",]
+        show_information();
+        $(".blow_button").click(function () {
+            total_times += 1;
+            if (Math.random() > posibility_arr[current_times]) {
+                current_times += 1;
+                current_point = point_arr[current_times];
+            } else {
+                total_point += point_arr[current_times - 1] * 0.3;
+                current_point = 0;
+                current_times = 0;
+            }
+            show_information();
+        });
+        $(".close_button").click(function () {
+
+
+            total_point += point_arr[current_times];
+            current_point = 0;
+            current_times = 0;
+
+            show_information();
+        });
+        $(".reset_button").click(function () {
+
+            total_times =0;
+            total_point =0;
+            current_point = 0;
+            current_times = 0;
+
+            show_information();
+        });
+        function show_information() {
+            $(".total tbody").empty().append(`<tr><td>${total_point}</td> <td>${total_times}</td> <td>${total_point / total_times}</td> </tr>`)
+            $(".bloom tbody").empty().append(`<tr><td>${current_times}</td> <td>${current_point}</td> <td>${posibility_arr[current_times]}</td> </tr>`)
+            $(".bloom-img").css("width", bloom_width_arr[current_times]);
+        }
+    </script>
+</body>
+
+</html>

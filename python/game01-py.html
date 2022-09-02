@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    
+</head>
+<body>
+    <h1 id="-">吹氣球 <span style="float: right;"><a href="game01.html"> 返回吹氣球遊戲</a></span></h1>
+<h2 id="python-">python 程式碼如下</h2>
+<pre><code class="lang-python"><span class="hljs-comment"># 遊戲規則:吹氣球 每吹一次有不同的機率會爆炸 把氣球綁起來 會獲得關於氣球大小的積分 並再吹下一顆</span>
+<span class="hljs-comment"># 爆炸獲得 30%分數 </span>
+<span class="hljs-comment"># 吹氣球 破掉機率 0 , 0.02 , 0.04 , 0.07 , 0.1 ,0.15 , 0.2 , 0.25 , 0.3 , 0.4 , 0.5</span>
+<span class="hljs-comment"># 積分增加 2000 2800 3600 4400 5200 6000 6800 7600 8400 9200</span>
+<span class="hljs-comment"># 積分累加 2000 4800 8400 12800 18000 24000 30800 38200 46800 </span>
+<span class="hljs-comment"># 找出最好的策略 可以獲得最多的分數</span>
+<span class="hljs-keyword">import</span> random
+blow_posibilitly=[<span class="hljs-number">0</span> , <span class="hljs-number">0.02</span> , <span class="hljs-number">0.04</span> , <span class="hljs-number">0.07</span> , <span class="hljs-number">0.1</span> ,<span class="hljs-number">0.15</span> , <span class="hljs-number">0.2</span> , <span class="hljs-number">0.25</span> , <span class="hljs-number">0.3</span> , <span class="hljs-number">0.4</span> , <span class="hljs-number">0.5</span> ,<span class="hljs-number">0.6</span>,<span class="hljs-number">0.7</span>,<span class="hljs-number">0.8</span>,<span class="hljs-number">0.9</span>,<span class="hljs-number">0.95</span>,<span class="hljs-number">1</span>]
+blow_point=[<span class="hljs-number">2000</span>+<span class="hljs-number">800</span>*x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> range(<span class="hljs-number">16</span>)]
+blow_total_point=[sum(blow_point[:x+<span class="hljs-number">1</span>]) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> range(<span class="hljs-number">15</span>)]
+times_arr=[x+<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> range(<span class="hljs-number">9</span>)]
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">point_count</span><span class="hljs-params">(times_in_function)</span>:</span>
+    <span class="hljs-comment">#足夠大的數字 可以使誤差將低</span>
+    total_times=<span class="hljs-number">1000000</span> 
+    <span class="hljs-comment">#初始化目前氣球大小為0 (0次吹氣)</span>
+    blow_times=<span class="hljs-number">0</span> 
+    <span class="hljs-comment">#初始化得分為0</span>
+    point=<span class="hljs-number">0</span> 
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(total_times):
+        blow_times+=<span class="hljs-number">1</span>
+        <span class="hljs-comment"># 判定有沒有吹破</span>
+        <span class="hljs-keyword">if</span>(random.random()&lt;blow_posibilitly[blow_times<span class="hljs-number">-1</span>]):
+            <span class="hljs-comment">#吹破獲得分數為當前分數*0.3</span>
+            point+=blow_total_point[blow_times<span class="hljs-number">-2</span>]*<span class="hljs-number">0.3</span>
+            <span class="hljs-comment">#氣球大小歸0</span>
+            blow_times=<span class="hljs-number">0</span>
+        <span class="hljs-comment">#若達到指定大小 則綁起氣球</span>
+        <span class="hljs-keyword">elif</span>(blow_times&gt;=times_in_function):
+            <span class="hljs-comment">#得分為吹完後的大小之分數</span>
+            point+=blow_total_point[blow_times<span class="hljs-number">-1</span>]
+            <span class="hljs-comment">#氣球大小歸0</span>
+            blow_times=<span class="hljs-number">0</span>
+    <span class="hljs-keyword">return</span> point/total_times <span class="hljs-comment">#平均得分</span>
+rank=[(x,point_count(x)) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> times_arr]
+<span class="hljs-comment">#排序後 將資料印出來</span>
+print(sorted(rank, key=<span class="hljs-keyword">lambda</span> r:r[<span class="hljs-number">1</span>],reverse=<span class="hljs-keyword">True</span>))
+</code></pre>
+<h2 id="-">執行結果</h2>
+<p>[(6, 3095.10396), (5, 3070.9566), (7, 2987.2832), (4, 2915.64924), (8, 2771.77404), (3, 2674.2978), (9, 2497.93764), (2, 2357.5338), (1, 2000.0)]<br>[(6, 3084.57432), (5, 3073.14948), (7, 2988.08052), (4, 2915.75952), (8, 2775.9894), (3, 2674.21572), (9, 2509.69944), (2, 2357.9958), (1, 2000.0)]<br>[(6, 3094.713), (5, 3072.87312), (7, 2980.86816), (4, 2915.68368), (8, 2767.74552), (3, 2675.11776), (9, 2489.15256), (2, 2358.1218), (1, 2000.0)]  </p>
+<h2 id="-">總結</h2>
+<p>六次的時候綁起來 會是期望值最高的<br>依序會是6&gt;5&gt;7&gt;4&gt;8&gt;3&gt;9...</p>
+
+</body>
+
+</html>

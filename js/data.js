@@ -72,7 +72,7 @@ page_data =[
         tags :["HTML","VS Code"]
     },{
         pageID : "013",
-        title : "bootstap 新手入門",
+        title : "bootstrap 新手入門",
         pageURL : "013.html",
         tags :["bootstrap",""]
     },{
