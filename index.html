@@ -1,12 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/bcc692acd2.js" crossorigin="anonymous"></script>
+
+    <title>Home page</title>
+    <style>
+        .top-navbar {
+            background-color: skyblue;
+        }
+
+        .sidebar {
+            background-color: lightblue;
+            height: 100%;
+            overflow: auto;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            margin: 0px;
+        }
+
+        .main-div {
+            height: 100%;
+        }
+
+        .main-row {
+            height: 100%;
+        }
+
+        .main-row .main {
+            background-color: snow;
+        }
+
+        .myhead img {
+            border-radius: 100%;
+            width: 50%;
+
+            margin: auto;
+            border: 2px solid blue;
+        }
+
+        .myhead {
+            text-align: center;
+        }
+
+        .intro ul {
+            list-style-type: none;
+        }
+    </style>
+
 </head>
+
 <body>
-    123
+    <header class="navbar top-navbar navbar-expand-md navbar-light">
+        <nav class="container-xxl flex-wrap flex-md-nowrap navbar-">
+            <a class="navbar-brand" href="home.html">
+                <img src="image/howscode.png" alt="" class="" width="40" height="32">
+                How's code
+            </a>
+            <div class="navbar-collapse ">
+                <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav pt-2 py-md-0">
+                    <li class="nav-item col-6 col-md-auto">
+                        <a class="p-2 nav-link" href="home.html"> Home</a>
+                    </li>
+
+                </ul>
+
+                <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+
+                    <li class="nav-item col-6 col-md-auto">
+                        <a class="nav-link p-2" href="/" target="_blank">
+                            search
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid  main-div">
+        <div class="row main-row">
+            <div class="col-4 sidebar">
+                <div class="myhead">
+                    <img src="image/PH.png">
+                </div>
+                <div class="intro">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>名字</td>
+                                <td>黃柏浩</td>
+                            </tr>
+                            <tr>
+                                <td>E-mail</td>
+                                <td>zzhowwoh.am03@g2.nctu.edu.tw</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="intro">
+                        <div class="card">
+                            <h3 id="how-s-code">
+                                <a href="page/001.html">
+                                    <img src="image/howscode.png" class="card-img-top w-50">
+                                    How&#39;s code
+                                </a>
+                            </h3>
+                            <div class="card-body">
+                                <p>取名為How's code主要是因為本人的名字有個浩字，音同how，有我本人的程式碼專區，另外也因同house code，有程式碼之家的意思。</p>
+                                <p>期許自己將這些技術整理成自己的程式碼之家，可以給其他人一點指引，也是讓自己不會忘記的一個方法。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8 main">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <img src="image/home-1.png" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h3 id="how-s-code"> <a href="page/001.html">技術BLOG</a> </h1>
+                                    <p>記錄前後端所遇到的大大小小的問題，內容包含但不限於HTML、JS、CSS、Java...等。</p>
+                                    <p>內含一些簡易的教學與介紹，若有錯誤或指教歡迎E-MAIL告知我。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <img src="image/home-2.png" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h3 id="how-s-code"> <a href="game/game.html">大富翁</a> </h1>
+                                    <p>自製一個網頁版的大富翁，用來練習JS語法，也透過製作遊戲的方式，熟悉物件導向的應用。</p>
+                                    <p>使用的素材如果有侵犯盜版權，請EMAIL通知，會盡速修正。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <img src="image/home-3.png" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h3 id="how-s-code"> <a href="python/game01.html">小遊戲大挑戰 (python)</a> </h1>
+                                    <p>自製一些小遊戲，使用Python去尋找小遊戲的最佳解答。</p>
+                                    <p>使用的素材如果有侵犯盜版權，請EMAIL通知，會盡速修正。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+
 </body>
+
 </html>
