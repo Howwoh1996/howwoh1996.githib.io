@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <title>計時器</title>
+    <style>
+        div {
+            text-align: center;
+        }
+        .time1,
+        .time2,
+        .total_turn {
+            margin: 6px;
+            border: 1px solid black;
+            background-color: gainsboro;
+            font-size: x-large;
+        }
+        .stop_text{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="time1">0</div>
+            </div>
+            <div class="col">
+                <div class="time2">0</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="total_turn">總回合:0</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="stop">
+                    <button class="stop_btn">STOP</button>
+                    <span class="stop_text">已暫停(按下SPACE 繼續)</span>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <script>
+        var time1 = 0;
+        var time2 = 0;
+        var turn = 0;
+        var total_turn = 0;
+        $(document).keydown(function (e) {
+            if (e.keyCode == '32') {
+                turn %= 2;
+                turn += 1;
+                total_turn += 1;
+                $(".total_turn").empty().append("總回合:"+total_turn);
+                $(".stop_btn").css("display","inline");
+                $(".stop_text").css("display","none");
+                if (turn == 1) {
+                    $(".time1").css("backgroundColor", "lightblue")
+                    $(".time2").css("backgroundColor", "gainsboro")
+                } if (turn == 2) {
+                    $(".time2").css("backgroundColor", "lightblue")
+                    $(".time1").css("backgroundColor", "gainsboro")
+                }
+            }
+        });
+        setInterval(function () {
+            if (turn == 1) {
+                time1 += 1;
+            } if (turn == 2) {
+                time2 += 1;
+            }
+            refresh()
+        }, 1000)
+        function refresh() {
+            $(".time1").empty().append(time1);
+            $(".time2").empty().append(time2);
+        }
+        $(".stop_btn").click(function(){
+            turn=0;
+            $(".stop_btn").css("display","none");
+            $(".stop_text").css("display","inline");
+        })
+    </script>
+
+</body>
+
+</html>

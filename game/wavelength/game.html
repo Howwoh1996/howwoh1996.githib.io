@@ -58,11 +58,29 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <button id="krdx">刻度顯示切換 </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <input type="text" class="inp-2">
+            </div>
+            <div class="col">
+                <button class="change-val">交換</button>
+            </div>
+            <div class="col">
+                <input type="text" class="inp-1">
+            </div>
+        </div>
+
 
     </div>
     <script src="data.js"></script>
     <script>
         var rand_num_word = 0;
+        var img100='img/100.png'
         var rand_num_img = 100;
         console.log(words);
         $(".change-word").click(change_words);
@@ -70,6 +88,20 @@
         $(".change-show").click(change_show);
         $(".change-hide").click(change_hide);
         $(".test-button").click(test);
+        $(".change-val").click(function(){
+            let temp=$(".inp-1").val();
+            $(".inp-1").val($(".inp-2").val());
+            $(".inp-2").val(temp);
+
+        })
+        $("#krdx").click(function(){
+            if(img100=="img/100.png"){
+                img100="img/100-1.png"
+            }else{
+                img100="img/100.png"
+            }
+            change_hide()
+        })
         function test(){
             rand_num_img = 101;
             $(".wave-img").attr('src', `img/${rand_num_img}.png`)
@@ -87,7 +119,7 @@
             $(".wave-img").attr('src', `img/${rand_num_img}.png`)
         }
         function change_hide() {
-            $(".wave-img").attr('src', `img/100.png`)
+            $(".wave-img").attr('src', img100)
         }
         function change_words() {
             $(".word").empty();

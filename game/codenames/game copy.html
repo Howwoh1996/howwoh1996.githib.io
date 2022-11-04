@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <title>Wave Length</title>
+    <style>
+        td{
+            height: 20px;
+            width: 20px;
+            border: 1px solid black;
+            background-color: gray;
+        }
+        .red{
+            background-color: red;
+        }
+        .blue{
+            background-color: blue;
+        }
+        .black{
+            background-color: black;
+        }
+            
+    </style>
+</head>
+<div class="container">
+    <button class="add">add</button>
+    <div class="block">
+        <table>
+            <tr class="1">
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+            </tr>
+            <tr class="2">
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+            </tr>
+            <tr class="3">
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+            </tr>
+            <tr class="4">
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+            </tr>
+            <tr class="5">
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<body>
+
+
+    <script>
+        var arr = [];
+        var arr55 = [];
+        for (let i = 0; i < 9; i++) {
+            arr.unshift('0');
+        }
+        for (let i = 0; i < 8; i++) {
+            arr.unshift('1');
+        }
+        for (let i = 0; i < 7; i++) {
+            arr.unshift('2');
+        }
+        arr.unshift('3');
+        function sort(array) {
+            array.sort(() => Math.random() - 0.5);
+        }
+        function reshape(array) {
+            let temp_arr=[[],[],[],[],[]]
+            for (let i = 0; i < 5; i++) {
+                for(let j=0;j<5;j++){
+                    temp_arr[i].push(array[i*5+j]);
+                }
+            }
+            return temp_arr;
+        }
+        function color(){
+            for (let i = 0; i < 5; i++) {
+                for(let j=0;j<5;j++){
+                    if(arr55[i][j]=='1'){
+                        $(`.${i+1} .${j+1}`).addClass("red")
+                    }
+                    if(arr55[i][j]=='2'){
+                        $(`.${i+1} .${j+1}`).css("background-color","blue")
+                    }
+                    if(arr55[i][j]=='3'){
+                        $(`.${i+1} .${j+1}`).css("background-color","black")
+                    }
+                }
+            }
+
+        }
+        sort(arr);
+        arr55=reshape(arr);
+        color();
+        $(".container").append(arr + '<br>');
+        $(".add").click(function () {
+            sort(arr);
+            arr55=reshape(arr);
+            $(".container").append(arr + '<br>');
+            $(".container").append(arr55);
+            color();
+        })
+        
+
+    </script>
+
+</body>
+
+</html>
