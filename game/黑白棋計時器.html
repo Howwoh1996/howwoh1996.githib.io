@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<style>
+    .myturn {
+        color: red;
+        font-weight: 600;
+    }
+    h1,.time-div,.t-a{text-align: center;}
+    #team1_time,#team2_time{
+        height: 300px;
+        font-size: 72px;
+        text-align: center;
+        width: 400px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class=""> <span> 雙連黑白棋大賽 計時器</span></h1>
+            </div>
+        </div>
+        <fieldset>
+            <div class="row">
+                <div class="col-5 time-div">
+                    <input type="text" disabled name="" id="team1_time" value="600">
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5 time-div">
+                    <input type="text" disabled name="" id="team2_time" value="600">
+                </div>
+            </div>
+            
+           
+        </fieldset>
+        <div class="row">
+            
+            <div class="col t-a">
+                <label for="time-set">設定時間</label>
+                <input type="number" name="time-set" class="time-set" id="">
+                <button class="time-set-check">送出</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let time1 = 600, time2 = 600
+        let turn = 0
+        function convert_time(time){
+            minutes= Math.floor(time/60)
+            seconds= time%60
+            if(minutes<10){minutes="0"+minutes}
+            if(seconds<10){seconds="0"+seconds}
+            return minutes+" : "+seconds
+        }
+        function change_turn() {
+            turn %= 2
+            turn += 1
+            if (turn == 1) {
+                
+                $("#team1_time").addClass("myturn");
+                $("#team2_time").removeClass("myturn");
+            }
+            if (turn == 2) {
+    
+                $("#team2_time").addClass("myturn");
+                $("#team1_time").removeClass("myturn");
+            }
+        }
+        $(document).keydown(function (e) {
+            console.log("Key: " + event.keyCode)
+            if (event.keyCode == 13) {
+                change_turn()
+            }
+        })
+        setInterval(function () {
+            if (turn == 1) {
+                time1 = time1 - 1
+                $("#team1_time").val(convert_time(time1))
+            
+            }
+            if (turn == 2) {
+                time2 = time2 - 1
+                $("#team2_time").val(convert_time(time2))
+               
+            }
+            console.log(turn)
+
+            
+           
+        }, 1000)
+
+
+        $(".time-set-check").click(function(){
+            console.log($(".time-set").val())
+            time1=Number($(".time-set").val())
+            time2=Number($(".time-set").val())
+        })
+    </script>
+</body>
+
+</html>
