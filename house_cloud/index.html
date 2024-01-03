@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Add the Firebase Analytics SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+    <!-- Add the Firebase Realtime Database SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>How's Cloud 家雲網</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        /* 半透明的背景 */
+        .bg {
+            /* background-image: url("./a97c508f-23cc-4fc2-8eb0-da332ffa10b7.webp"); */
+            background-image: url("./a97c508f-23cc-4fc2-8eb0-da332ffa10b7.webp");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        #clouds-container {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            /* background-color: #87CEEB; */
+            /* Light blue sky color */
+        }
+
+        .cloud {
+            position: absolute;
+            background-image: url("./cloud.webp");
+            border-radius: 50%;
+            opacity: 0.8;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            text-align: center;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 4px;
+            box-shadow: 0 0 10px #000;
+        }
+
+        .c-out {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <div class="bg"></div>
+    <div id="clouds-container"></div>
+    <div class="container">
+        <div class="row ">
+            <div class="col-11">
+                <div class="row show_content_area"></div>
+            </div>
+            <div class="col-1">
+                <button class="button" id="clear">clear </button>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAPd2KaOFNrdkP_smsuVLFnxPTL2tDTjtc",
+        authDomain: "kolist-98369.firebaseapp.com",
+        databaseURL: "https://kolist-98369-default-rtdb.firebaseio.com",
+        projectId: "kolist-98369",
+        storageBucket: "kolist-98369.appspot.com",
+        messagingSenderId: "992398642911",
+        appId: "1:992398642911:web:78733258cb149251d4e36a",
+        measurementId: "G-BJKCHKTYE8"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    // 獲取資料庫的引用
+    var database = firebase.database();
+    var userRef = database.ref('Cloud');
+    // 監聽資料庫變化
+    userRef.on('value', function (snapshot) {
+        const data = snapshot.val()
+        console.log(data)
+        $('.show_content_area').empty()
+        // data 是object
+        if (!data) {
+            return
+        }
+        Object.keys(data).forEach(key => {
+            const content = data[key]
+            show_content(content.title, content.content)
+        })
+    });
+
+    $('#clear').click(function () {
+        userRef.set({})
+    })
+    const show_content = (title, content_text) => {
+        const content = $(`<div class="col-4 c-out">
+            <div class="content">
+            <div class="title">${title}</div>
+            <div class="content-text">${content_text}</div>
+        </div>
+        </div>`)
+        $('.show_content_area').append(content)
+    }
+    const clouds_b_data = [
+        {
+            "title": "教會參與度",
+            "content": "討論你們希望如何參與教會活動，包括敬拜、小組、和服事。"
+        },
+        {
+            "title": "靈性成長",
+            "content": "分享你們各自如何培養個人的靈性生活，例如禱告、讀經、靜默。"
+        },
+        {
+            "title": "信仰在日常生活中的應用",
+            "content": "探討如何將基督教價值觀融入到日常生活中，如工作、家庭和社交。"
+        },
+        {
+            "title": "兒童的宗教教育",
+            "content": "討論對孩子的宗教教育的看法，包括主日學和家庭教育。"
+        },
+        {
+            "title": "對於教會教義的看法",
+            "content": "分享你們對於所屬教派的教義和教學的理解和立場。"
+        },
+        {
+            "title": "面對困難時的信仰應對",
+            "content": "探討在面臨挑戰和困難時，如何依靠信仰找到力量和指引。"
+        },
+        {
+            "title": "宗教儀式和慶典",
+            "content": "討論在重要的宗教節日和慶典（如聖誕節、復活節）中的傳統和活動。"
+        },
+        {
+            "title": "慈善與服務",
+            "content": "探討如何通過慈善活動和服務他人來實踐基督的愛。"
+        },
+        {
+            "title": "對於福音傳播的參與",
+            "content": "討論參與宣教和福音傳播的可能性和方式。"
+        },
+        {
+            "title": "信仰中的難題和疑問",
+            "content": "開放地分享和討論對於信仰中的難題或疑問，並尋求共同的理解和答案。"
+        }
+    ]
+
+    const clouds_n_data = [
+        {
+            "title": "價值觀與信仰",
+            "content": "討論你們對於人生、宗教和道德的看法。"
+        },
+        {
+            "title": "家庭規劃",
+            "content": "是否想要孩子，以及何時想要孩子。"
+        },
+        {
+            "title": "財務管理",
+            "content": "對於儲蓄、投資、支出和負債的看法。"
+        },
+        {
+            "title": "職業目標",
+            "content": "未來的職業規劃與期望。"
+        },
+        {
+            "title": "居住地點",
+            "content": "期望居住的地區或國家。"
+        },
+        {
+            "title": "家庭與朋友",
+            "content": "雙方家庭和朋友的關係與互動。"
+        },
+        {
+            "title": "健康與生活方式",
+            "content": "包括飲食習慣、運動、以及對健康問題的看法。"
+        },
+        {
+            "title": "休閒與娛樂",
+            "content": "共享的興趣和娛樂活動。"
+        },
+        {
+            "title": "溝通與衝突解決",
+            "content": "處理分歧和爭議的方式。"
+        },
+        {
+            "title": "性生活",
+            "content": "性偏好、需求和期望。"
+        },
+        {
+            "title": "教育與學習",
+            "content": "對於持續學習和成長的看法。"
+        },
+        {
+            "title": "文化與傳統",
+            "content": "各自的文化背景和傳統，以及如何融合。"
+        },
+        {
+            "title": "旅行與冒險",
+            "content": "對旅行的看法和期望。"
+        },
+        {
+            "title": "家務分工",
+            "content": "家庭事務的管理和分配。"
+        },
+        {
+            "title": "個人空間與獨立性",
+            "content": "對於個人時間和空間的需求。"
+        },
+        {
+            "title": "長期目標與夢想",
+            "content": "未來的計劃和夢想。"
+        },
+        {
+            "title": "寵物",
+            "content": "對於養寵物的態度和偏好。"
+        },
+        {
+            "title": "政治觀點",
+            "content": "政治立場和對當前事務的看法。"
+        },
+        {
+            "title": "經濟安全與退休計劃",
+            "content": "對於財務安全和退休的計劃。"
+        },
+        {
+            "title": "個人成長與支持",
+            "content": "如何支持對方的個人成長和發展。"
+        }
+    ]
+
+    //合併兩個資料
+    const clouds_data = [...clouds_n_data, ...clouds_b_data]
+    let cloud_count = 0
+    $(document).ready(function () {
+        function createCloud() {
+            if (cloud_count >= clouds_data.length) {
+                return
+            }
+            cloud_count++
+            const cloud_data = clouds_data[cloud_count - 1]
+            var $cloud = $(`<div class="cloud">${cloud_data.title}</div>`);
+            $cloud.click(function () {
+                userRef.push(cloud_data)
+            })
+            $('#clouds-container').append($cloud);
+
+            // Randomize cloud size, position, and direction
+            var cloudSize = Math.random() * 60 + 60; // Cloud size between 20 and 80px
+            var cloudPositionX = Math.random() * ($('#clouds-container').width() - cloudSize);
+            var cloudPositionY = Math.random() * ($('#clouds-container').height() - cloudSize);
+            var directionX = Math.random() < 0.5 ? -1 : 1; // Left or Right
+            var directionY = Math.random() < 0.5 ? -1 : 1; // Up or Down
+
+            $cloud.css({
+                width: cloudSize,
+                height: cloudSize,
+                left: cloudPositionX,
+                top: cloudPositionY
+            });
+
+            // Function to move the cloud
+            function moveCloud() {
+                var currentLeft = $cloud.position().left;
+                var currentTop = $cloud.position().top;
+                var newLeft = currentLeft + directionX * Math.random() * 4; // Adjust speed by changing the multiplier
+                var newTop = currentTop + directionY * Math.random() * 4; // Adjust speed by changing the multiplier
+
+                // Check for container boundaries
+                if (newLeft < 0 || newLeft + cloudSize > $('#clouds-container').width()) {
+                    directionX *= -1; // Reverse direction
+                }
+                if (newTop < 0 || newTop + cloudSize > $('#clouds-container').height()) {
+                    directionY *= -1; // Reverse direction
+                }
+
+                $cloud.css({ left: newLeft, top: newTop });
+            }
+
+
+
+            // Move the cloud every 50ms
+            setInterval(moveCloud, 50);
+        }
+
+        // Generate new cloud every 2 seconds
+        setInterval(createCloud, 2000);
+    });
+
+
+
+
+</script>
+
+</html>
