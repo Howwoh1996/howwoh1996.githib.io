@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <!-- 引入 jQuery 核心库 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- 引入 jQuery UI 库 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <!-- Add the Firebase Analytics SDK -->
@@ -85,6 +91,7 @@
             </div>
             <div class="col-1">
                 <button class="button" id="clear">clear </button>
+                <button class="button" id="stop">stop </button>
             </div>
 
         </div>
@@ -109,6 +116,10 @@
     // 獲取資料庫的引用
     var database = firebase.database();
     var userRef = database.ref('Cloud');
+    const how_ref = database.ref('Hows_Cloud');
+    const how_ref_get = (target) => {
+        return database.ref(`Hows_Cloud/${target}`)
+    }
     // 監聽資料庫變化
     userRef.on('value', function (snapshot) {
         const data = snapshot.val()
@@ -262,6 +273,7 @@
         }
     ]
 
+    let cloud_stop_config = false
     //合併兩個資料
     const clouds_data = [...clouds_n_data, ...clouds_b_data]
     let cloud_count = 0
@@ -291,9 +303,31 @@
                 left: cloudPositionX,
                 top: cloudPositionY
             });
+            let moveInterval;
+            moveInterval = setInterval(moveCloud, 50); // 启动定时器
+
+            // 使云可拖动
+            $cloud.draggable({
+                containment: "#clouds-container",
+                scroll: false,
+                start: function (event, ui) {
+                    clearInterval(moveInterval); // 在拖动开始时停止移动
+                },
+                stop: function (event, ui) {
+                    // 更新云的位置
+                    var newLeft = ui.position.left;
+                    var newTop = ui.position.top;
+                    $cloud.css({ left: newLeft, top: newTop });
+
+                    moveInterval = setInterval(moveCloud, 50); // 拖动停止时恢复移动
+                }
+            });
 
             // Function to move the cloud
             function moveCloud() {
+                if (cloud_stop_config) {
+                    return
+                }
                 var currentLeft = $cloud.position().left;
                 var currentTop = $cloud.position().top;
                 var newLeft = currentLeft + directionX * Math.random() * 4; // Adjust speed by changing the multiplier
@@ -309,16 +343,35 @@
 
                 $cloud.css({ left: newLeft, top: newTop });
             }
-
-
-
             // Move the cloud every 50ms
             setInterval(moveCloud, 50);
         }
-
         // Generate new cloud every 2 seconds
         setInterval(createCloud, 2000);
     });
+
+
+    // 取得使用者資訊 並上傳firebase
+    function get_user_info() {
+        fetch('http://ip-api.com/json')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                console.log(data.query)
+                const now = new Date()
+                const time = now.toLocaleString().replace(/\//g, '-').replace(/,/g, '')
+                const query = data.query.replace(/\./g, '-')
+                console.log({ [time]: data })
+                how_ref_get(query).update({ [time]: data })
+            });
+    }
+    get_user_info()
+
+    $('#stop').click(function () {
+        cloud_stop_config = !cloud_stop_config
+    })
+
+
 
 
 

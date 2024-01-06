@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <!-- 引入 jQuery 核心库 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- 引入 jQuery UI 库 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Add the Firebase Analytics SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+    <!-- Add the Firebase Realtime Database SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>棋盤</title>
+    <style>
+        .score-input {
+            width: 100%;
+        }
+
+        .input {
+            width: 100%;
+        }
+
+        .point-count {
+            background-color: aliceblue;
+        }
+
+        #board .board-td {
+            width: 36px;
+            height: 36px;
+            border: 1px solid black;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        body {
+            background-color: gray;
+            padding-top: 40px;
+        }
+
+        .white {
+            background-color: white;
+        }
+
+        .green {
+            background-color: rgb(71, 176, 71);
+        }
+
+        .blue {
+            background-color: rgb(108, 108, 212);
+        }
+
+        .gray {
+            background-color: gray;
+        }
+
+        .now-color {
+            width: 50px;
+            height: 50px;
+            /* background-color: white; */
+            font-size: 30px;
+            border-radius: 100%;
+            border: 1px solid black;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .area {
+            display: flex;
+        }
+
+        .q-block {
+            border: 1px solid black;
+            border-radius: 100%;
+            text-align: center;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2">
+                easy
+                <div class="easy-area area row"></div>
+                normal
+                <div class="normal-area area row"></div>
+                hard
+                <div class="hard-area area row"></div>
+            </div>
+            <div class="col-6">
+                <!-- 棋盤 -->
+                <table id="board" class=" ">
+                </table>
+            </div>
+
+            <div class="col-1">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="now-color"></div>
+                    </div>
+                    <div class="col-12"> <button class="gray-button button">X</button></div>
+                    <div class="col-12"> <button class="blue-button button">Blue</button></div>
+                    <div class="col-12"> <button class="green-button button">Green</button></div>
+                    <div class="col-12"> <button class="white-button button">White</button></div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col-3 team blue-team">
+                        Blue
+                        <br>
+                        <input type="number" name="" id="blue-input" class="score-input" disabled>
+                        <br>
+                    </div>
+                    <div class="col-3 team green-team"> Green
+                        <input type="number" name="" id="green-input" class="score-input" disabled>
+
+                    </div>
+                    <div class="col-3 team white-team"> White
+                        <input type="number" name="" id="white-input" class="score-input" disabled>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row white">
+            <div class="col">
+                <p>
+                    得分規則：
+                </p>
+                <p>
+                    答出第一句: +1
+                    <br>
+                    完整哼唱: +2
+                    <br>
+                    完整哼唱: +2
+                    <br>
+                    歌詞全對: +3
+                    <br>
+                    答對第幾首: +2
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    難度加成:
+                </p>
+                <p>
+                    easy: *1
+                    <br>
+                    normal: *1.5
+                    <br>
+                    hard: *3
+                </p>
+            </div>
+            <div class="col">
+                <p> 下棋: </p>
+                <p>
+                    2分 +1顆
+                    <br>
+                    6分 +2顆
+                    <br>
+                    12分 +3顆
+                    <br>
+                    20分 +4顆
+                    <br>
+                </p>
+            </div>
+            <div class="col">
+                <table class="table point-count">
+                    <thead>
+                        <tr>
+                            <th>直線</th>
+                            <th>計分</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>3</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>12</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col">
+
+                <table class="table point-count">
+                    <thead>
+                        <tr>
+                            <th>方格</th>
+                            <th>計分</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2*2</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>3*3</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>4*4</td>
+                            <td>24</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+</body>
+<script>
+    const score_obj = { blue: 0, white: 0, green: 0 }
+    // 產生19*19棋盤
+    var board = document.getElementById('board');
+    var board_html = '';
+    for (var i = 0; i < 19; i++) {
+        board_html += '<tr>';
+        for (var j = 0; j < 19; j++) {
+            board_html += `<td id="${i}-${j}" class="board-td" >${i + 1}-${j + 1}</td>`;
+        }
+        board_html += '</tr>';
+    }
+    board.innerHTML = board_html;
+    let now_color = "gray";
+    function put_color(e, color) {
+        id = e.target.id;
+        console.log(e.target.id);
+        console.log(color);
+        //移除所有顏色
+        $("#" + id).removeClass("white");
+        $("#" + id).removeClass("green");
+        $("#" + id).removeClass("blue");
+        $("#" + id).removeClass("gray");
+
+        $("#" + id).addClass(color);
+        // 改變now_color顏色
+        $(".now-color").addClass(color);
+
+    }
+    $(".board-td").click((e) => put_color(e, now_color));
+    $(".button").click((e) => {
+        now_color = e.target.className.split("-")[0];
+        console.log(now_color);
+
+        // 改變now_color顏色
+        $(".now-color").removeClass("white");
+        $(".now-color").removeClass("green");
+        $(".now-color").removeClass("blue");
+        $(".now-color").removeClass("gray");
+        $(".now-color").addClass(now_color);
+    });
+
+
+    // 
+    const easy_num = 27
+    const normal_num = 25
+    const hard_num = 12
+    // 產生easy_num個easy
+    for (let i = 0; i < easy_num; i++) {
+        $(".easy-area").append(`<div class="easy easy-${i} q-block col">${i + 1}</div>`);
+    }
+    // 產生normal_num個normal
+    for (let i = 0; i < normal_num; i++) {
+        $(".normal-area").append(`<div class="normal normal-${i} q-block col">${i + 1}</div>`);
+    }
+    // 產生hard_num個hard
+    for (let i = 0; i < hard_num; i++) {
+        $(".hard-area").append(`<div class="hard hard-${i} q-block col">${i + 1}</div>`);
+    }
+    $('.q-block').click((e) => {
+        console.log(e.target);
+        // 如果有白色
+        if (now_color != 'gray') {
+            $(e.target).removeClass("white");
+            $(e.target).removeClass("green");
+            $(e.target).removeClass("blue");
+            $(e.target).removeClass("gray");
+            $(e.target).addClass(now_color);
+        } else {
+            $(e.target).removeClass("white");
+            $(e.target).removeClass("green");
+            $(e.target).removeClass("blue");
+            $(e.target).removeClass("gray");
+        }
+    });
+
+    // 在team 產生 增加分數的input 與一個加分按鈕
+    function generate_input_buttons(color) {
+        $(`.${color}-team`).append(`<input type="number" id="${color}-add-input" class="input"> <button class="${color}-plus-button">加分</button>`)
+        $(`.${color}-plus-button`).click(() => {
+            const add_point = parseInt($(`#${color}-add-input`).val())
+            score_obj[color] += add_point
+            $(`#${color}-input`).val(score_obj[color])
+        })
+        $(`.${color}-team`).append(`
+        <button class="${color}-b-2">-2</button>
+        <button class="${color}-b-6">-6</button>
+        <button class="${color}-b-12">-12</button>
+        <button class="${color}-b-20">-20</button>`)
+        $(`.${color}-b-2`).click(() => {
+            const add_point = -2
+            score_obj[color] += add_point
+            $(`#${color}-input`).val(score_obj[color])
+        })
+        $(`.${color}-b-6`).click(() => {
+            const add_point = -6
+            score_obj[color] += add_point
+            $(`#${color}-input`).val(score_obj[color])
+        })
+        $(`.${color}-b-12`).click(() => {
+            const add_point = -12
+            score_obj[color] += add_point
+            $(`#${color}-input`).val(score_obj[color])
+        })
+        $(`.${color}-b-20`).click(() => {
+            const add_point = -20
+            score_obj[color] += add_point
+            $(`#${color}-input`).val(score_obj[color])
+        })
+
+    }
+    const color_array = ['blue', 'green', 'white']
+    color_array.forEach((color) => { generate_input_buttons(color) })
+
+
+
+
+
+
+</script>
+
+</html>
