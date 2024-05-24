@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- import bootstrap and Jquery -->
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <style>
+      .board {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .row {
+        display: flex;
+      }
+      .cell {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+      }
+      .player-card-info {
+        margin-top: 10px;
+        display: flex;
+        /* 塞不下就換行 */
+        flex-wrap: wrap;
+      }
+      .card {
+        border: 1px solid black;
+        margin: 5px;
+        padding: 5px;
+        width: 170px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board" id="board"></div>
+    <div class="" id="currentPlayer"></div>
+    <div id="game-info"></div>
+    <div id="players-info"></div>
+    <div id="use-card-area"></div>
+  </body>
+  <script>
+    //   卡片元素
+    // 圖片化顯示卡片 顯示卡片名稱、圖片、效果 並且可以選擇使用 或取消使用
+    // 使用時 會將卡片標記為使用中
+    // 使用卡片 會傳入uuid
+    const cardElement = (card) => {
+      let cardElement = $("<div class='card'></div>").text(
+        `${card.name} ${card.use ? "(using)" : ""}`
+      );
+      let effectArea = $("<div></div>").text(card.effect);
+      let deleteButton = $("<button></button>")
+        .text("delete")
+        .click(() => {
+          game.deleteCard(card.uuid);
+        });
+      // 圖片大小為50*50
+      let img = $("<img></img>")
+        .attr("src", card.img)
+        .css("width", "150px")
+        .css("height", "150px");
+      let useButton = $("<button></button>")
+        .text("use")
+        .click(() => {
+          game.useCardWithUuid(card.uuid);
+          game.render();
+        });
+      let cancel = $("<button></button>")
+        .text("cancel")
+        .click(() => {
+          game.cancelUseCardWithUuid(card.uuid);
+          game.render();
+        });
+      cardElement.append(img);
+      cardElement.append(useButton);
+      cardElement.append(cancel);
+      cardElement.append(effectArea);
+      cardElement.append(deleteButton);
+
+      return cardElement;
+    };
+
+    // 建立6*6的棋盤 並且設定每個格子的id
+    let board = $("#board");
+    for (let i = 0; i < 6; i++) {
+      let row = $("<div></div>").addClass("row");
+      for (let j = 0; j < 6; j++) {
+        let cell = $("<div></div>")
+          .addClass("cell")
+          .attr("id", `cell-${i}-${j}`);
+        row.append(cell);
+      }
+      board.append(row);
+    }
+
+    // 建立棋盤物件 來記錄所有的情況
+    let boardObj = {
+      board: [],
+      init: function () {
+        for (let i = 0; i < 6; i++) {
+          let row = [];
+          for (let j = 0; j < 6; j++) {
+            row.push(0);
+          }
+          this.board.push(row);
+        }
+      },
+      set: function (x, y, value) {
+        this.board[x][y] = value;
+      },
+      get: function (x, y) {
+        return this.board[x][y];
+      },
+      render: function () {
+        for (let i = 0; i < 6; i++) {
+          for (let j = 0; j < 6; j++) {
+            let cell = $(`#cell-${i}-${j}`);
+            let value = this.get(i, j);
+            let color = value === 0 ? "white" : game.players[value - 1].color;
+            cell.css("background-color", color);
+          }
+        }
+      },
+      // 旋轉棋盤 將棋盤分為9個區域 指定區域進行旋轉
+      // 第一個參數表示要旋轉的區域 第二個參數表示旋轉的方向 true 為順時針 false 為逆時針
+      rotateSmall: function (x, y) {
+        // 定為區域基準點陣列
+        let base = [
+          [0, 0],
+          [0, 2],
+          [0, 4],
+          [2, 0],
+          [2, 2],
+          [2, 4],
+          [4, 0],
+          [4, 2],
+          [4, 4],
+        ];
+
+        //將該2*2區域進行旋轉
+        let rotate = function (x, y, clockwise) {
+          // 旋轉方向
+          if (clockwise) {
+            let temp = boardObj.board[x][y];
+            boardObj.board[x][y] = boardObj.board[x + 1][y];
+            boardObj.board[x + 1][y] = boardObj.board[x + 1][y + 1];
+            boardObj.board[x + 1][y + 1] = boardObj.board[x][y + 1];
+            boardObj.board[x][y + 1] = temp;
+          } else {
+            let temp = boardObj.board[x][y];
+            boardObj.board[x][y] = boardObj.board[x][y + 1];
+            boardObj.board[x][y + 1] = boardObj.board[x + 1][y + 1];
+            boardObj.board[x + 1][y + 1] = boardObj.board[x + 1][y];
+            boardObj.board[x + 1][y] = temp;
+          }
+        };
+
+        rotate(base[x][0], base[x][1], y);
+
+        // 渲染
+        this.render();
+      },
+    };
+
+    // 設定遊戲物件 來記錄當前玩家
+    let game = {
+      currentPlayer: 1,
+      // players
+      players: [
+        { name: "player1", color: "red", score: 0, cards: [] },
+        { name: "player2", color: "blue", score: 0, cards: [] },
+        { name: "player3", color: "green", score: 0, cards: [] },
+      ],
+
+      clearMode: false,
+      init: function () {
+        this.currentPlayer = 1;
+        game.render();
+        // 創建玩家資訊區域 顯示玩家分數
+        for (let i = 0; i < 3; i++) {
+          let player = $(`<div id="player${i + 1}-info"></div>`).text(
+            `${this.players[i].name} score: ${this.players[i].score}`
+          );
+          $("#game-info").append(player);
+        }
+
+        // 創建按鈕與一個輸入框 可以輸入分數 與一個radio 可以選擇指定玩家
+        let addScore = $("<input></input>").attr("type", "number");
+        let selectPlayer = $("<select></select>");
+        for (let i = 0; i < 3; i++) {
+          let option = $("<option></option>").text(this.players[i].name);
+          selectPlayer.append(option);
+        }
+        let confirm = $("<button></button>")
+          .text("confirm")
+          .click(function () {
+            let score = parseInt(addScore.val());
+            // 檢查是否為數字
+            if (isNaN(score)) {
+              alert("please input number");
+              return;
+            }
+            let player = selectPlayer.val();
+            game.players.forEach((v) => {
+              if (v.name === player) {
+                v.score += score;
+              }
+            });
+            game.render();
+          });
+        $("#game-info").append(addScore);
+        $("#game-info").append(selectPlayer);
+        $("#game-info").append(confirm);
+
+        // 創建卡片區域 顯示卡片資訊
+        for (let i = 0; i < 3; i++) {
+          let player = this.players[i];
+          let playerCardInfo = $(
+            `<div id="player-${
+              i + 1
+            }-card-info" class = "player-card-info"></div>`
+          ).text(`${player.name} cards: ${player.cards.map((v) => v.name)}`);
+          $("#players-info").append(playerCardInfo);
+        }
+
+        // 創建按鈕 為指定玩家發送隨機卡片
+        let sendCard = $("<button></button>")
+          .text("send card")
+          .click(function () {
+            let player = game.players[game.currentPlayer - 1];
+            let card = cards[Math.floor(Math.random() * cards.length)];
+            let new_card = { ...card };
+            new_card.uuid = Math.random();
+            new_card.use = false;
+            player.cards.push(new_card);
+            game.render();
+          });
+        $("#game-info").append(sendCard);
+
+        // 創建按鈕 可以使用卡片
+        let useCardElement = $("<button></button>")
+          .text("use card")
+          .click(function () {
+            //清空使用卡片區域
+            $("#use-card-area").empty();
+            let player = game.players[game.currentPlayer - 1];
+            let playerText = $("<div></div>").text(
+              `${player.name} use card area :`
+            );
+            let select = $("<select></select>");
+            player.cards.forEach((v) => {
+              let option = $("<option></option>").text(v.name).val(v.uuid);
+              select.append(option);
+            });
+            let confirm = $("<button></button>")
+              .text("confirm")
+              .click(function () {
+                let uuid = select.val();
+                game.useCard(uuid, player);
+                game.render();
+              });
+            $("#use-card-area").append(playerText);
+            $("#use-card-area").append(select);
+            $("#use-card-area").append(confirm);
+          });
+        $("#game-info").append(useCardElement);
+
+        // 創建按鈕 可以直接切換玩家
+        let button = $("<button></button>")
+          .text("change player")
+          .click(function () {
+            game.currentPlayer = (game.currentPlayer % 3) + 1;
+            game.render();
+          });
+        $("#game-info").append(button);
+        // 創建按鈕 可以切換清除模式 用來清除格子 開啟會顯示on 關閉會顯示off
+        let clearButton = $("<button></button>")
+          .text("clear mode: off")
+          .click(function () {
+            game.clearMode = !game.clearMode;
+            clearButton.text(`clear mode: ${game.clearMode ? "on" : "off"}`);
+          });
+        $("#game-info").append(clearButton);
+        // 創建按鈕與一個下拉式選單  可以旋轉棋盤指定區域 1-9 並且可以選擇旋轉方向
+        let rotateButton = $("<button></button>")
+          .text("rotate")
+          .click(function () {
+            let select = $("<select></select>");
+            for (let i = 0; i < 9; i++) {
+              let option = $("<option></option>").text(i + 1);
+              select.append(option);
+            }
+            let direction = $("<select></select>");
+            let option1 = $("<option></option>").text("clockwise").val(true);
+            let option2 = $("<option></option>")
+              .text("counter-clockwise")
+              .val(false);
+            direction.append(option1);
+            direction.append(option2);
+            let confirm = $("<button></button>")
+              .text("confirm")
+              .click(function () {
+                let x = parseInt(select.val()) - 1;
+                let y = direction.val() === "true";
+                console.log(x, y);
+                boardObj.rotateSmall(x, y);
+              });
+            $("#game-info").append(select);
+            $("#game-info").append(direction);
+            $("#game-info").append(confirm);
+          });
+        $("#game-info").append(rotateButton);
+      },
+      // 當前情況 可能是 玩家1,2,3 在進行回合 或是清除模式
+      // 當格子被點擊 會把格子填上當前玩家的顏色
+      // 如果是清除模式 則會把格子清空
+      move: function (x, y) {
+        if (this.clearMode) {
+          boardObj.set(x, y, 0);
+        } else if (boardObj.get(x, y) === 0) {
+          boardObj.set(x, y, this.currentPlayer);
+          //   this.currentPlayer = (this.currentPlayer % 3) + 1;
+        }
+      },
+
+      // 將卡片標記為使用中 傳入參數為卡片uuid與使用玩家
+      useCard: function (uuid, player) {
+        let card = player.cards.find((v) => v.uuid == uuid);
+        if (card) {
+          card.use = true;
+        }
+        game.render();
+      },
+
+      // 將卡片標記為使用中 傳入參數為卡片uuid 去自動尋找哪一個玩家擁有這張卡片
+      useCardWithUuid: function (uuid) {
+        for (let i = 0; i < 3; i++) {
+          let player = this.players[i];
+          let card = player.cards.find((v) => v.uuid == uuid);
+          if (card) {
+            card.use = true;
+          }
+        }
+        game.render();
+      },
+      // 將卡片標記為使用中 傳入參數為卡片uuid 去自動尋找哪一個玩家擁有這張卡片
+      cancelUseCardWithUuid: function (uuid) {
+        for (let i = 0; i < 3; i++) {
+          let player = this.players[i];
+          let card = player.cards.find((v) => v.uuid == uuid);
+          if (card) {
+            card.use = false;
+          }
+        }
+        game.render();
+      },
+      // 刪除卡片
+      deleteCard: function (uuid) {
+        for (let i = 0; i < 3; i++) {
+          let player = this.players[i];
+          player.cards = player.cards.filter((v) => v.uuid !== uuid);
+        }
+        game.render();
+      },
+
+      render: function () {
+        boardObj.render();
+        let currentPlayer = $("#currentPlayer");
+        currentPlayer.text(
+          `current player & color: ${
+            game.players[this.currentPlayer - 1].name
+          } ${game.players[this.currentPlayer - 1].color}`
+        );
+        let smallSquare = $("<span></span>")
+          .text("[  ]")
+          .css("width", "50px")
+          .css("height", "50px")
+          .css("background-color", game.players[this.currentPlayer - 1].color);
+        // 放一個方塊 顏色為當前玩家的顏色
+        currentPlayer.append(smallSquare);
+
+        // 渲染最新玩家分數
+        for (let i = 0; i < 3; i++) {
+          $(`#player${i + 1}-info`).text(
+            `${this.players[i].name} score: ${this.players[i].score}`
+          );
+        }
+        // 渲染最新玩家卡片 並且是否使用 會最先顯示當前玩家的卡片
+        for (let i = 0; i < 3; i++) {
+          //   let player = this.players[i];
+          let player = this.players[(this.currentPlayer + i + 2) % 3];
+          $(`#player-${i + 1}-card-info`).empty();
+          $(`#player-${i + 1}-card-info`).text(`${player.name} cards:`);
+          for (let j = 0; j < player.cards.length; j++) {
+            let card = player.cards[j];
+            let cardEle = cardElement(card);
+            $(`#player-${i + 1}-card-info`).append(cardEle);
+          }
+        }
+      },
+    };
+
+    // 設定每個格子的click事件
+    $(".cell").click(function () {
+      let id = $(this).attr("id");
+      let [x, y] = id
+        .split("-")
+        .slice(1)
+        .map((v) => parseInt(v));
+      game.move(x, y);
+      game.render();
+      //   boardObj.render();
+    });
+
+    // 卡片圖鑑 資訊包含：名稱、圖片、效果、編號
+    // 玩家可以選擇卡片來使用
+    const cards = [
+      {
+        name: "連擊卡",
+        img: "./image/card1.webp",
+        effect: "可以額外進行一次普通射擊",
+        id: 1,
+      },
+      {
+        name: "清除卡",
+        img: "./image/card2.webp",
+        effect: "可以額外射擊一次,此次射擊會清除那個格子的顏色",
+        id: 2,
+      },
+      {
+        name: "佔領卡",
+        img: "./image/card3.webp",
+        effect:
+          "強化一次射擊,此次射擊會將那個格子變為你的顏色(即使原本是其他玩家的顏色)",
+        id: 3,
+      },
+      {
+        name: "順轉卡",
+        img: "./image/card7.webp",
+        effect: "可以額外進行一次普通射擊,且此次射擊會順時鐘轉被擊中的2*2區域",
+        id: 4,
+      },
+      {
+        name: "逆轉卡",
+        img: "./image/card8.webp",
+        effect: "可以額外進行一次普通射擊,且此次射擊會逆時鐘轉被擊中的2*2區域",
+        id: 5,
+      },
+      {
+        name: "炸彈卡",
+        img: "./image/card6.webp",
+        effect: "強化一次射擊,會炸掉(清除)你擊中的格子在棋盤上的2*2區域",
+        id: 6,
+      },
+    ];
+
+    // 初始化遊戲
+    boardObj.init();
+    game.init();
+  </script>
+</html>
