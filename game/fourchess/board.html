@@ -44,6 +44,7 @@
     <div id="game-info"></div>
     <div id="players-info"></div>
     <div id="use-card-area"></div>
+    <div id="question"></div>
   </body>
   <script>
     //   卡片元素
@@ -463,5 +464,412 @@
     // 初始化遊戲
     boardObj.init();
     game.init();
+  </script>
+  <script>
+    //question區域
+    const questions = [
+      {
+        question: "神所造的第一個人的性別是什麼？",
+        answer: "男性",
+      },
+      {
+        question: "神所造的第一個人的名字是什麼？",
+        answer: "亞當",
+      },
+      {
+        question: "挪亞建造的巨船稱為什麼？",
+        answer: "方舟",
+      },
+      {
+        question: "摩西的哥哥是誰？",
+        answer: "亞倫",
+      },
+      {
+        question: "摩西在哪座山上領受了十誡？",
+        answer: "西乃山",
+      },
+      {
+        question: "以色列的第一個國王是誰？",
+        answer: "掃羅",
+      },
+      {
+        question: "大衛用什麼擊敗了歌利亞？",
+        answer: "石子和甩石器",
+      },
+      {
+        question: "神在創造的第七天做了什麼？",
+        answer: "安息",
+      },
+      {
+        question: "耶穌出生的城市是什麼？",
+        answer: "伯利恆",
+      },
+      {
+        question: "耶穌的母親名字是什麼？",
+        answer: "瑪利亞",
+      },
+      {
+        question: "耶穌的十二使徒中有一位叛變的名字是什麼？",
+        answer: "猶大",
+      },
+      {
+        question: "諾亞的三個兒子分別是誰？",
+        answer: "閃、含、雅弗",
+      },
+      {
+        question: "摩西用什麼分開了紅海？",
+        answer: "手杖",
+      },
+      {
+        question: "施洗約翰給耶穌施洗的河流是什麼？",
+        answer: "約旦河",
+      },
+      {
+        question: "舊約中的最長的經卷是？",
+        answer: "詩篇",
+      },
+      {
+        question: "舊約中最短的書是哪一本？",
+        answer: "俄巴底亞書",
+      },
+      {
+        question: "耶穌在十字架上說的最後一句話是什麼？",
+        answer: "「成了」",
+      },
+      {
+        question: "耶穌的第一個神蹟是什麼？",
+        answer: "在迦拿婚宴變水為酒",
+      },
+      {
+        question: "摩西的母親名字是什麼？",
+        answer: "約基別",
+      },
+      {
+        question: "亞伯拉罕的兒子是誰？",
+        answer: "以撒",
+      },
+      {
+        question: "耶穌在曠野受試探幾天？",
+        answer: "40天",
+      },
+      {
+        question: "以色列人在曠野漂流了多少年？",
+        answer: "40年",
+      },
+      {
+        question: "耶穌在世上傳道幾年？",
+        answer: "約3年",
+      },
+      {
+        question: "舊約中的第一本書是什麼？",
+        answer: "創世記",
+      },
+      {
+        question: "新約中的第一本書是什麼？",
+        answer: "馬太福音",
+      },
+      {
+        question: "舊約中的最後一本書是什麼？",
+        answer: "瑪拉基書",
+      },
+      {
+        question: "新約中的最後一本書是什麼？",
+        answer: "啟示錄",
+      },
+      {
+        question: "摩西帶領以色列人出埃及的節日是什麼？",
+        answer: "逾越節",
+      },
+      {
+        question: "亞當和夏娃的第三個兒子是誰？",
+        answer: "塞特",
+      },
+      {
+        question: "亞當和夏娃的第2個兒子是誰？",
+        answer: "亞伯",
+      },
+      {
+        question: "亞當和夏娃的第1個兒子是誰？",
+        answer: "該隱",
+      },
+      {
+        question: "亞伯拉罕的原名是什麼？",
+        answer: "亞伯蘭",
+      },
+      {
+        question: "撒拉的原名是什麼？",
+        answer: "撒萊",
+      },
+      {
+        question: "以色列的智慧王是誰？",
+        answer: "所羅門",
+      },
+      {
+        question: "約拿被大魚吞了多少天？",
+        answer: "三天三夜",
+      },
+      {
+        question: "路得的婆婆是誰？",
+        answer: "拿俄米",
+      },
+      {
+        question: "以色列的第二個國王是誰？",
+        answer: "大衛",
+      },
+      {
+        question: "神在第幾天造了人類？",
+        answer: "第六天",
+      },
+      {
+        question: "神用什麼造了亞當？",
+        answer: "塵土",
+      },
+      {
+        question: "詩篇的作者主要是誰？",
+        answer: "大衛",
+      },
+      {
+        question: "誰背叛了耶穌？",
+        answer: "猶大",
+      },
+      {
+        question: "耶穌被釘十字架的山是什麼？",
+        answer: "各各他山",
+      },
+      {
+        question: "大衛擊敗歌利亞時用了幾顆石子？",
+        answer: "一顆",
+      },
+      {
+        question: "大衛去打歌利亞時準備了幾顆石子？",
+        answer: "五顆",
+      },
+      {
+        question: "耶穌的爸爸是誰？",
+        answer: "約瑟",
+      },
+      {
+        question: "挪亞方舟停靠在什麼山上？",
+        answer: "亞拉臘山",
+      },
+      {
+        question: "哪位王統治以色列時建造了聖殿？",
+        answer: "所羅門",
+      },
+      {
+        question: "以利亞與敬拜誰的先師在加密山上比試？",
+        answer: "巴力",
+      },
+      {
+        question: "哪位使徒在海上行走了一段時間？",
+        answer: "彼得",
+      },
+      {
+        question: "神毀滅所多瑪和蛾摩拉時，用的是什麼？",
+        answer: "硫磺與火",
+      },
+      {
+        question: "摩西看到燃燒的荊棘是在什麼山？",
+        answer: "何烈山",
+      },
+      {
+        question: "誰是以色列的最後一位士師？",
+        answer: "撒母耳",
+      },
+      {
+        question: "誰被稱為「信心之父」？",
+        answer: "亞伯拉罕",
+      },
+      {
+        question: "誰在獅子坑中被神保護？",
+        answer: "但以理",
+      },
+      {
+        question: "誰夢見天梯？",
+        answer: "雅各",
+      },
+      {
+        question: "誰帶領以色列百姓渡過約旦河？",
+        answer: "約書亞",
+      },
+      {
+        question: "誰的妻子變成了鹽柱？",
+        answer: "羅得",
+      },
+      {
+        question: "誰解釋了法老的夢？",
+        answer: "約瑟",
+      },
+      {
+        question: "以色列人繞行耶利哥城多少天？",
+        answer: "七天",
+      },
+      {
+        question: "誰把紅海變成血？",
+        answer: "摩西",
+      },
+      {
+        question: "誰帶領以色列人進入迦南地？",
+        answer: "約書亞",
+      },
+      {
+        question: "哪個國王尋求女巫的幫助？",
+        answer: "掃羅",
+      },
+      {
+        question: "誰被神從魚腹中救出？",
+        answer: "約拿",
+      },
+      {
+        question: "哪位先知預言了耶穌的降生？",
+        answer: "以賽亞",
+      },
+      {
+        question: "耶穌在哪裡被釘十字架？",
+        answer: "各各他",
+      },
+      {
+        question: "誰夢見了七隻肥牛和七隻瘦牛？",
+        answer: "法老",
+      },
+      {
+        question: "誰是耶穌的表兄弟？",
+        answer: "施洗約翰",
+      },
+      {
+        question: "誰是第一位殉道的基督徒？",
+        answer: "司提反",
+      },
+      {
+        question: "誰在曠野中吃蝗蟲和野蜜？",
+        answer: "施洗約翰",
+      },
+      {
+        question: "誰在西奈山上領受了律法？",
+        answer: "摩西",
+      },
+
+      {
+        question: "誰在耶穌被捕時三次不認主？",
+        answer: "彼得",
+      },
+
+      {
+        question: "誰在啟示錄中看到末世異象？",
+        answer: "約翰",
+      },
+      {
+        question: "誰是先知以利亞的接班人？",
+        answer: "以利沙",
+      },
+      {
+        question: "誰夢見了天梯與神的天使？",
+        answer: "雅各",
+      },
+      {
+        question: "誰在紅海中逃離了埃及的奴役？",
+        answer: "以色列人",
+      },
+      {
+        question: "誰在曠野中受了試探？",
+        answer: "耶穌",
+      },
+      {
+        question: "誰在新約中寫了「約翰福音」？",
+        answer: "約翰",
+      },
+    ];
+
+    // 為questions 賦予id
+    questions.forEach((v, i) => {
+      v.id = i;
+    });
+
+    // 隨機選取沒有被選取過的一個問題 並且記錄該問題id 到localStorage 使其下次呼叫不會重複出現
+    function randomQuestion() {
+      let selected = JSON.parse(localStorage.getItem("selected")) || [];
+      let unselected = questions.filter((v) => !selected.includes(v.id));
+      let question = unselected[Math.floor(Math.random() * unselected.length)];
+      selected.push(question.id);
+      localStorage.setItem("selected", JSON.stringify(selected));
+      return question;
+    }
+
+    let currentQuestion = null;
+    // 逐字顯示問題使用參數
+    let charOfQuestion = 0;
+
+    // 創建選取問題按鈕
+    let questionButton = $("<button></button>")
+      .text("select question")
+      .click(function () {
+        $("#question-area").empty();
+        charOfQuestion = 0;
+        let question = randomQuestion();
+        currentQuestion = question;
+        $("#question-info").text(
+          `question ${question.id + 1} total char: ${question.question.length}`
+        );
+      });
+
+    $("#question").append(questionButton);
+
+    // 問題資訊區域 顯示第幾題 與題目的總字數
+    let questionInfo = $("<div></div>").attr("id", "question-info");
+    $("#question").append(questionInfo);
+
+    // 顯示問題區域
+    let questionArea = $("<div></div>").attr("id", "question-area");
+    $("#question").append(questionArea);
+    // 顯示答案區域
+    let answerArea = $("<div></div>").attr("id", "answer-area");
+    $("#question").append(answerArea);
+
+    // 顯示問題按鈕
+    let showQuestionButton = $("<button></button>")
+      .text("show question")
+      .click(function () {
+        if (currentQuestion) {
+          let question = $("<div></div>").text(currentQuestion.question);
+          $("#question-area").empty();
+          $("#question-area").append(question);
+        }
+      });
+    $("#question").append(showQuestionButton);
+
+    // 逐字顯示問題按鈕 每按一次顯示一個字
+    let showQuestionCharButton = $("<button></button>")
+      .text("show question char")
+      .click(function () {
+        if (currentQuestion) {
+          let question = $("<div></div>").text(
+            currentQuestion.question.slice(0, charOfQuestion)
+          );
+          charOfQuestion++;
+          $("#question-area").empty();
+          $("#question-area").append(question);
+        }
+      });
+    $("#question").append(showQuestionCharButton);
+
+    // 清空localStorage的已選擇問題 按鈕
+    let clearSelectedButton = $("<button></button>")
+      .text("clear selected")
+      .click(function () {
+        localStorage.removeItem("selected");
+      });
+    $("#question").append(clearSelectedButton);
+
+    // 顯示答案按鈕
+    let showAnswerButton = $("<button></button>")
+      .text("show answer")
+      .click(function () {
+        if (currentQuestion) {
+          let answer = $("<div></div>").text(currentQuestion.answer);
+          $("#answer-area").empty();
+          $("#answer-area").append(answer);
+        }
+      });
+    $("#question").append(showAnswerButton);
   </script>
 </html>
