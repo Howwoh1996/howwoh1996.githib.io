@@ -10,6 +10,16 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Add the Firebase Analytics SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+    <!-- Add the Firebase Realtime Database SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <style>
       .board {
         display: flex;
@@ -36,6 +46,12 @@
         padding: 5px;
         width: 170px;
       }
+      .answer {
+        display: none;
+      }
+      .answer.show {
+        display: inline;
+      }
     </style>
   </head>
   <body>
@@ -45,7 +61,59 @@
     <div id="players-info"></div>
     <div id="use-card-area"></div>
     <div id="question"></div>
+    <div id="player-answer-area"></div>
   </body>
+  <script>
+    let answerArray = [];
+    // firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAPd2KaOFNrdkP_smsuVLFnxPTL2tDTjtc",
+      authDomain: "kolist-98369.firebaseapp.com",
+      databaseURL: "https://kolist-98369-default-rtdb.firebaseio.com",
+      projectId: "kolist-98369",
+      storageBucket: "kolist-98369.appspot.com",
+      messagingSenderId: "992398642911",
+      appId: "1:992398642911:web:78733258cb149251d4e36a",
+      measurementId: "G-BJKCHKTYE8",
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    // 獲取資料庫的引用
+    var database = firebase.database();
+    var userRef = database.ref("board");
+    // 上傳玩家資料到資料庫
+    function uploadPlayer(players) {
+      console.log(players);
+      userRef.set(players);
+    }
+    // 監聽資料庫的變化
+    let playerDoRef = database.ref("playerDo");
+    playerDoRef.on("value", (snapshot) => {
+      let data = snapshot.val();
+      // 如果type 是 answer 則會記錄該筆回答到回答區域
+      if (data.type === "answer") {
+        answerArray.push(data);
+        let answerArea = $("#player-answer-area");
+        answerArea.empty();
+        answerArray.forEach((v) => {
+          let answer = $("<div></div>").html(
+            `${v.player} : <span class="answer">${v.answer}</span>`
+          );
+          answerArea.append(answer);
+        });
+      }
+      // 如果type 是 useCard
+      if (data.type === "useCard") {
+        console.log("usecard", data);
+        if (data.use == true) game.useCardWithUuid(data.uuid);
+        if (data.use == false) game.cancelUseCardWithUuid(data.uuid);
+        game.render();
+      }
+
+      console.log(data);
+    });
+  </script>
   <script>
     //   卡片元素
     // 圖片化顯示卡片 顯示卡片名稱、圖片、效果 並且可以選擇使用 或取消使用
@@ -219,6 +287,16 @@
         $("#game-info").append(selectPlayer);
         $("#game-info").append(confirm);
 
+        // 創建清除答案按鈕
+        let clearAnswer = $("<button></button>")
+          .text("clear answer")
+          .click(function () {
+            answerArray = [];
+            let answerArea = $("#player-answer-area");
+            answerArea.empty();
+          });
+        $("#game-info").append(clearAnswer);
+
         // 創建卡片區域 顯示卡片資訊
         for (let i = 0; i < 3; i++) {
           let player = this.players[i];
@@ -229,6 +307,13 @@
           ).text(`${player.name} cards: ${player.cards.map((v) => v.name)}`);
           $("#players-info").append(playerCardInfo);
         }
+        // 創建顯示答案按鈕 點擊後為所有answer加上show class
+        let showAnswer = $("<button></button>")
+          .text("show player answer")
+          .click(function () {
+            $(".answer").addClass("show");
+          });
+        $("#game-info").append(showAnswer);
 
         // 創建按鈕 為指定玩家發送隨機卡片
         let sendCard = $("<button></button>")
@@ -404,6 +489,7 @@
             $(`#player-${i + 1}-card-info`).append(cardEle);
           }
         }
+        uploadPlayer(game.players);
       },
     };
 
@@ -465,6 +551,7 @@
     boardObj.init();
     game.init();
   </script>
+
   <script>
     //question區域
     const questions = [
@@ -777,6 +864,42 @@
       {
         question: "誰在新約中寫了「約翰福音」？",
         answer: "約翰",
+      },
+      {
+        question: "誰因嫉妒殺了弟弟？",
+        answer: "該隱",
+      },
+      {
+        question: "誰被賣為奴隸並成為埃及的宰相？",
+        answer: "約瑟",
+      },
+      {
+        question: "誰在埃及的王宮中被養大？",
+        answer: "摩西",
+      },
+      {
+        question: "誰被大衛派去前線戰死以掩蓋罪行？",
+        answer: "烏利亞",
+      },
+      {
+        question: "誰的禱告使天降火燒盡祭物？",
+        answer: "以利亞",
+      },
+      {
+        question: "誰被母親放在一個小籃子裡漂流在河上？",
+        answer: "摩西",
+      },
+      {
+        question: "誰因不服從神的命令而被魚吞下？",
+        answer: "約拿",
+      },
+      {
+        question: "誰是第一位女性士師？",
+        answer: "底波拉",
+      },
+      {
+        question: "誰是撒母耳的母親？",
+        answer: "哈拿",
       },
     ];
 

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- import bootstrap and Jquery -->
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Add the Firebase Analytics SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+    <!-- Add the Firebase Realtime Database SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      #cards {
+        margin-top: 10px;
+        display: flex;
+        /* 塞不下就換行 */
+        flex-wrap: wrap;
+      }
+      .board {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .row {
+        display: flex;
+      }
+      .cell {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+      }
+      .player-card-info {
+        margin-top: 10px;
+        display: flex;
+        /* 塞不下就換行 */
+        flex-wrap: wrap;
+      }
+      .card {
+        border: 1px solid black;
+        margin: 5px;
+        padding: 5px;
+        width: 170px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="player"></div>
+    <div id="answer-area"></div>
+    <div id="cards"></div>
+  </body>
+  <script>
+    // firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAPd2KaOFNrdkP_smsuVLFnxPTL2tDTjtc",
+      authDomain: "kolist-98369.firebaseapp.com",
+      databaseURL: "https://kolist-98369-default-rtdb.firebaseio.com",
+      projectId: "kolist-98369",
+      storageBucket: "kolist-98369.appspot.com",
+      messagingSenderId: "992398642911",
+      appId: "1:992398642911:web:78733258cb149251d4e36a",
+      measurementId: "G-BJKCHKTYE8",
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    // 獲取資料庫的引用
+    var database = firebase.database();
+    var userRef = database.ref("playerDo");
+    // 上傳玩家所做動作到資料庫
+    function uploadPlayerDo(data) {
+      userRef.set(data);
+    }
+    // 監聽資料庫的變化 場上情形
+    let boardRef = database.ref("board");
+    boardRef.on("value", (snapshot) => {
+      const board = snapshot.val();
+      // 取出本玩家的資料
+      const currentPlayerPosition = parseInt(currentPlayer) - 1;
+      console.log(board);
+      const currentPlayerInfo = board[currentPlayerPosition];
+      // 刷新卡片
+      if (currentPlayerInfo.cards) {
+        refreshCards(currentPlayerInfo.cards);
+      }
+    });
+  </script>
+  <script>
+    // 使用jquery
+    //生成 input 提供輸入答案
+    //生成發送按鈕 發送答案 有confirm 確認後清除input內容
+    //input沒有填入 不能發送
+    const answerArea = $("#answer-area");
+    const input = $("<input>");
+    const button = $("<button>發送</button>");
+    button.click(() => {
+      if (input.val() === "") {
+        alert("請輸入答案");
+        return;
+      }
+      if (confirm(`確定要發送答案嗎: ${input.val()}  `)) {
+        // 發送答案
+        const upLoadData = {
+          type: "answer",
+          answer: input.val(),
+          player: `player${currentPlayer}`,
+          random: Math.random(),
+        };
+        uploadPlayerDo(upLoadData);
+        input.val("");
+      }
+    });
+    answerArea.append(input);
+    answerArea.append(button);
+
+    let currentPlayer = 1;
+    // 生成玩家選項 一個下拉選擇框 當選擇改變的時候 會切換玩家
+    const player = $("#player");
+    const select = $("<select>");
+    select.append($("<option>player1</option>"));
+    select.append($("<option>player2</option>"));
+    select.append($("<option>player3</option>"));
+    select.change((e) => {
+      currentPlayer = e.target.value.slice(-1);
+    });
+    player.append(select);
+
+    // 生成卡片
+    const cards = $("#cards");
+    const cardElement = (card) => {
+      let cardElement = $("<div class='card'></div>").text(
+        `${card.name} ${card.use ? "(using)" : ""}`
+      );
+      let effectArea = $("<div></div>").text(card.effect);
+
+      // 圖片大小為50*50
+      let img = $("<img></img>")
+        .attr("src", card.img)
+        .css("width", "150px")
+        .css("height", "150px");
+      let useButton = $("<button></button>")
+        .text("use")
+        .click(() => {
+          //發送使用卡片的資料 uuid use: true
+          const upLoadData = {
+            type: "useCard",
+            card: card.uuid,
+            player: currentPlayer,
+            uuid: card.uuid,
+            random: Math.random(),
+            use: true,
+          };
+          uploadPlayerDo(upLoadData);
+        });
+      let cancel = $("<button></button>")
+        .text("cancel")
+        .click(() => {
+          //發送使用卡片的資料 uuid use: false
+          const upLoadData = {
+            type: "useCard",
+            card: card.uuid,
+            uuid: card.uuid,
+            player: currentPlayer,
+            random: Math.random(),
+            use: false,
+          };
+          uploadPlayerDo(upLoadData);
+        });
+      cardElement.append(img);
+      cardElement.append(useButton);
+      cardElement.append(cancel);
+      cardElement.append(effectArea);
+
+      return cardElement;
+    };
+    const refreshCards = (cards) => {
+      $("#cards").empty();
+      cards.forEach((card) => {
+        $("#cards").append(cardElement(card));
+      });
+    };
+  </script>
+</html>
