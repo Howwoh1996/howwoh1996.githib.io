@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON 動物解析工具</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    textarea {
+      width: 100%;
+    }
+    button {
+      margin: 5px 0;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result div {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>JSON 動物解析工具</h1>
+
+  <h2>輸入基準座標</h2>
+  <label for="xInput">X 座標：</label>
+  <input type="number" id="xInput" placeholder="輸入 X 座標">
+  <label for="yInput">Y 座標：</label>
+  <input type="number" id="yInput" placeholder="輸入 Y 座標">
+  <button onclick="saveBaseCoordinates()">儲存基準座標</button>
+  
+  <h2>生成 Fetch 指令</h2>
+  <button onclick="generateFetch()">生成 Fetch 指令</button>
+  <textarea id="fetchCommand" rows="5" readonly></textarea>
+  <button onclick="copyFetchCommand()">複製指令</button>
+
+  <h2>JSON 輸入</h2>
+  <textarea id="jsonInput" rows="10" placeholder="在此處貼上 JSON"></textarea>
+  <br><br>
+  <button onclick="parseJSON()">解析並顯示結果</button>
+  <button id="sortByWeight" style="display: none;" onclick="sortByWeight()">按加權排序</button>
+  <button id="sortByDistance" style="display: none;" onclick="sortByDistance()">按距離排序</button>
+
+  <h2>解析結果：</h2>
+  <div id="result"></div>
+
+  <script>
+    let animalData = []; // 存放有動物的條目
+
+    // 初始化基準座標
+    const defaultX = -165;
+    const defaultY = -144;
+
+    function loadBaseCoordinates() {
+      const savedX = localStorage.getItem('baseX');
+      const savedY = localStorage.getItem('baseY');
+      document.getElementById('xInput').value = savedX !== null ? savedX : defaultX;
+      document.getElementById('yInput').value = savedY !== null ? savedY : defaultY;
+    }
+
+    function saveBaseCoordinates() {
+      const xInput = document.getElementById('xInput').value || defaultX;
+      const yInput = document.getElementById('yInput').value || defaultY;
+      localStorage.setItem('baseX', xInput);
+      localStorage.setItem('baseY', yInput);
+      alert(`基準座標已儲存為 (${xInput}, ${yInput})`);
+    }
+
+    function generateFetch() {
+      const xInput = document.getElementById('xInput').value || defaultX;
+      const yInput = document.getElementById('yInput').value || defaultY;
+
+      const fetchCommand = `
+fetch('https://finals.travian.com/api/v1/map/position', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    data: {
+      x: ${xInput},
+      y: ${yInput},
+      zoomLevel: 3,
+      ignorePositions: []
+    }
+  })
+}).then(response => response.json()).then(console.log);
+      `.trim();
+
+      document.getElementById('fetchCommand').value = fetchCommand;
+    }
+
+    function copyFetchCommand() {
+      const fetchCommand = document.getElementById('fetchCommand');
+      fetchCommand.select();
+      document.execCommand('copy');
+      alert('指令已複製到剪貼簿！');
+    }
+
+    function parseJSON() {
+      const input = document.getElementById("jsonInput").value;
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = ""; // 清空結果
+      animalData = []; // 重置有動物的條目
+      document.getElementById("sortByWeight").style.display = "none";
+      document.getElementById("sortByDistance").style.display = "none";
+
+      try {
+        // 將輸入的 JSON 解析為對象
+        const data = JSON.parse(input);
+        const tiles = data.tiles;
+
+        // 動物對應表與加權
+        const animalMap = {
+          u31: { name: "鼠", weight: 1 },
+          u32: { name: "蜘蛛", weight: 1 },
+          u33: { name: "蛇", weight: 1 },
+          u34: { name: "蝙蝠", weight: 1 },
+          u35: { name: "野豬", weight: 2 },
+          u36: { name: "野狼", weight: 2 },
+          u37: { name: "熊", weight: 2 },
+          u38: { name: "鱷魚", weight: 3 },
+          u39: { name: "老虎", weight: 3 },
+          u40: { name: "大象", weight: 5 }
+        };
+
+        // 基準點
+        const baseX = parseInt(localStorage.getItem('baseX')) || defaultX;
+        const baseY = parseInt(localStorage.getItem('baseY')) || defaultY;
+
+        // 計算距離
+        function calculateDistance(x, y) {
+          return Math.sqrt(Math.pow(x - baseX, 2) + Math.pow(y - baseY, 2));
+        }
+
+        // 遍歷 tiles，提取有動物的條目
+        tiles.forEach(tile => {
+          const x = tile.position.x;
+          const y = tile.position.y;
+          const distance = calculateDistance(x, y);
+
+          if (tile.text && tile.text.includes("{k.animals}")) {
+            // 使用正則表達式提取動物數據
+            const animals = [...tile.text.matchAll(/<i class="unit u(\d+)"><\/i><span class="value ">(\d+)<\/span>/g)]
+              .map(match => ({
+                type: animalMap[`u${match[1]}`]?.name || `未知動物(${match[1]})`,
+                weight: animalMap[`u${match[1]}`]?.weight || 0,
+                count: parseInt(match[2], 10)
+              }));
+
+            if (animals.length > 0) {
+              const totalWeight = animals.reduce((sum, animal) => sum + animal.weight * animal.count, 0);
+              animalData.push({
+                position: tile.position,
+                distance: distance,
+                totalWeight: totalWeight,
+                animals: animals
+              });
+            }
+          }
+        });
+
+        // 顯示按距離排序的預設結果
+        sortByDistance();
+
+        // 顯示排序按鍵
+        if (animalData.length > 0) {
+          document.getElementById("sortByWeight").style.display = "inline-block";
+          document.getElementById("sortByDistance").style.display = "inline-block";
+        }
+      } catch (e) {
+        resultDiv.innerHTML = "無效的 JSON，請檢查格式！";
+      }
+    }
+
+    function displayResults(sortedData) {
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = ""; // 清空結果
+
+      sortedData.forEach(entry => {
+        const entryDiv = document.createElement("div");
+        const x = entry.position.x;
+        const y = entry.position.y;
+        
+        let animalDetails = entry.animals.map(animal => `${animal.type}: ${animal.count} (加權: ${animal.weight})`).join("<br>");
+        
+        // 建立超連結
+        const link = `<a href="https://finals.travian.com/build.php?gid=16&tt=2&eventType=4&x=${x}&y=${y}" target="_blank">查看座標 (${x}, ${y})</a>`;
+
+        entryDiv.innerHTML = `
+          <strong>位置：</strong> (${x}, ${y})<br>
+          <strong>距離：</strong> ${entry.distance.toFixed(2)}<br>
+          <strong>總加權：</strong> ${entry.totalWeight}<br>
+          <strong>動物數量：</strong><br>${animalDetails}<br>
+          ${link}<br><br>
+        `;
+        resultDiv.appendChild(entryDiv);
+      });
+    }
+
+    // 按加權排序
+    function sortByWeight() {
+      const sortedData = [...animalData].sort((a, b) => b.totalWeight - a.totalWeight);
+      displayResults(sortedData);
+    }
+
+    // 按距離排序
+    function sortByDistance() {
+      const sortedData = [...animalData].sort((a, b) => a.distance - b.distance);
+      displayResults(sortedData);
+    }
+
+    // 初始化基準座標
+    loadBaseCoordinates();
+  </script>
+</body>
+</html>

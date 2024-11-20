@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const board = Array(6).fill(null).map(() => Array(6).fill(null));
+    let currentPlayer = 'X';
+
+    const gameBoard = document.getElementById('game-board');
+    gameBoard.innerHTML = '';
+    board.forEach((row, rowIndex) => {
+        row.forEach((cell, cellIndex) => {
+            const cellElement = document.createElement('div');
+            cellElement.classList.add('cell');
+            cellElement.dataset.row = rowIndex;
+            cellElement.dataset.cell = cellIndex;
+            cellElement.addEventListener('click', () => placePiece(rowIndex, cellIndex));
+            gameBoard.appendChild(cellElement);
+        });
+    });
+
+    function placePiece(row, cell) {
+        if (!board[row][cell]) {
+            board[row][cell] = currentPlayer;
+            document.querySelector(`[data-row="${row}"][data-cell="${cell}"]`).textContent = currentPlayer;
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+    }
+
+    function rotateBoard(type) {
+        if (type === 'big') {
+            rotateBigCircle()
+            updateBoard()
+        } else if (type === 'small') {
+            rotateSmallCircle();
+            updateBoard()
+        }
+    }
+
+    function animateRotation(type) {
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            cell.classList.add('rotate-animation');
+        });
+        setTimeout(() => {
+            cells.forEach(cell => {
+                cell.classList.remove('rotate-animation');
+            });
+        }, 1000);
+    }
+
+    function rotateBigCircle() {
+        const newBoard = board.map(row => row.slice());
+
+        // Define the positions of the outer 2x2 blocks
+        const blocks = [
+            [0, 0], [0, 2], [0, 4],
+            [2, 4], [4, 4], [4, 2],
+            [4, 0], [2, 0]
+        ];
+
+        // Move each 2x2 block to the position of the next block in the counterclockwise direction
+        for (let i = 0; i < blocks.length; i++) {
+            const [x, y] = blocks[i];
+            const [newX, newY] = blocks[(i + 1) % blocks.length];
+
+            // Move the 2x2 block
+            newBoard[newX][newY] = board[x][y];
+            newBoard[newX][newY + 1] = board[x][y + 1];
+            newBoard[newX + 1][newY] = board[x + 1][y];
+            newBoard[newX + 1][newY + 1] = board[x + 1][y + 1];
+        }
+
+        // Update the original board
+        for (let rowIndex = 0; rowIndex < 6; rowIndex++) {
+            for (let colIndex = 0; colIndex < 6; colIndex++) {
+                board[rowIndex][colIndex] = newBoard[rowIndex][colIndex];
+            }
+        }
+    }
+
+    function rotateSmallCircle() {
+        const coordinates = [
+            [2, 2], [2, 3], [3, 3], [3, 2]
+        ];
+        const newValues = coordinates.map(([x, y]) => board[x][y]);
+        for (let i = 0; i < coordinates.length; i++) {
+            const [newX, newY] = coordinates[i];
+            board[newX][newY] = newValues[(i + 3) % coordinates.length];
+        }
+    }
+
+    function updateBoard() {
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, cellIndex) => {
+                document.querySelector(`[data-row="${rowIndex}"][data-cell="${cellIndex}"]`).textContent = cell;
+            });
+        });
+    }
+
+    window.rotateBoard = rotateBoard; // 暴露 rotateBoard 函數到全局範圍
+});
+
+</script>
+<body>
+    <h1>五子棋</h1>
+    <div id="game-board"></div>
+    <div id="controls">
+        <button onclick="rotateBoard('big')">大圈轉</button>
+        <button onclick="rotateBoard('small')">小圈轉</button>
+    </div>
+
+</body>
+</html>
